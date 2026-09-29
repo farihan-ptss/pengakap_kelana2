@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Pembelajaran Interaktif: Sains Pernafasan & Kecemasan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            emergency: {
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c'
+            },
+            tech: {
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Pulse wave animation for CPR simulator */
+    @keyframes ecgPulse {
+      0% { stroke-dashoffset: 600; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .ecg-line {
+      stroke-dasharray: 600;
+      animation: ecgPulse 2.5s linear infinite;
+    }
+
+    /* Lung breathing animation */
+    @keyframes lungExpand {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.16); }
+    }
+    .lung-breathing {
+      animation: lungExpand 4.5s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    /* Diaphragm movement */
+    @keyframes diaphragmMove {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(12px); }
+    }
+    .diaphragm-moving {
+      animation: diaphragmMove 4.5s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    /* Custom Toast container */
+    #toastContainer {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+  <!-- Toast Notification Container (No alert() used) -->
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-tech-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+            <i data-lucide="activity" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight leading-none">4.0 Sistem pernafasan manusia</h1>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Hub Interaktif Pernafasan & Kecemasan</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="openModal('quickHelpModal')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+            <i data-lucide="help-circle" class="w-4 h-4 text-slate-500"></i>
+            <span>Panduan Pantas</span>
+          </button>
+          <a href="#kuiz" onclick="switchTab('tab-quiz')" class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-sm rounded-lg transition-colors">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            <span>Uji Minda</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Sub-tabs -->
+    <div class="bg-white border-t border-slate-100 overflow-x-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-2 py-2">
+        <button onclick="switchTab('tab-4-0')" id="nav-tab-4-0" class="tab-btn active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 text-brand-700 bg-brand-50 border border-brand-200">
+          <i data-lucide="wind" class="w-4 h-4"></i>
+          <span>4.0 Sistem Pernafasan</span>
+        </button>
+        <button onclick="switchTab('tab-4-1')" id="nav-tab-4-1" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+          <span>4.1 Pemulihan (CPR)</span>
+        </button>
+        <button onclick="switchTab('tab-4-2')" id="nav-tab-4-2" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>4.2 Patah, Anduhan & Alih</span>
+        </button>
+        <button onclick="switchTab('tab-4-3')" id="nav-tab-4-3" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <i data-lucide="cpu" class="w-4 h-4"></i>
+          <span>4.3 AI & Resusitasi</span>
+        </button>
+        <button onclick="switchTab('tab-quiz')" id="nav-tab-quiz" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+          <span>Pentaksiran Interaktif</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    
+    <!-- ==========================================
+         MODUL 4.0: SISTEM PERNAFASAN MANUSIA
+         ========================================== -->
+    <section id="tab-4-0" class="tab-content block space-y-8">
+      <!-- Section Hero -->
+      <div class="bg-gradient-to-br from-teal-900 via-slate-900 to-slate-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+          <i data-lucide="wind" class="w-96 h-96"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-semibold mb-4 border border-teal-500/30">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Modul 4.0
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">Sistem Pernafasan Manusia</h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Ketahui bagaimana sistem respirasi manusia membekalkan oksigen (O₂) ke seluruh sel badan untuk respirasi sel dan menyingkirkan karbon dioksida (CO₂). Terokai mekanik pernafasan secara visual dan dinamik di bawah.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Anatomy & Mechanics Split View -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Visual Simulator Column -->
+        <div class="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="play-circle" class="w-5 h-5 text-brand-600"></i> Simulator Dinamik: Tarik vs Hembus Nafas
+              </h3>
+              <span id="breathPhaseBadge" class="px-2.5 py-1 text-xs font-bold rounded-full bg-teal-100 text-teal-800">Tarik Nafas</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-6">Pilih fasa di bawah untuk melihat pergerakan sangkar rusuk, otot interkostal, dan diafragma serta perubahan tekanan udara.</p>
+          </div>
+
+          <!-- SVG Visual Anatomy Simulation -->
+          <div class="bg-slate-900 rounded-xl p-6 flex flex-col items-center justify-center relative min-h-[300px]">
+            <svg viewBox="0 0 400 320" class="w-full max-w-xs h-auto" id="lungSvg">
+              <!-- Trachea -->
+              <rect x="188" y="30" width="24" height="65" rx="5" fill="#94a3b8" />
+              <line x1="188" y1="45" x2="212" y2="45" stroke="#475569" stroke-width="2" />
+              <line x1="188" y1="60" x2="212" y2="60" stroke="#475569" stroke-width="2" />
+              <line x1="188" y1="75" x2="212" y2="75" stroke="#475569" stroke-width="2" />
+              <!-- Bronchi -->
+              <path d="M190 95 Q160 120 135 140" stroke="#64748b" stroke-width="12" fill="none" stroke-linecap="round"/>
+              <path d="M210 95 Q240 120 265 140" stroke="#64748b" stroke-width="12" fill="none" stroke-linecap="round"/>
+              <!-- Left Lung -->
+              <g id="leftLungGroup" class="lung-breathing origin-center">
+                <path d="M140 125 C110 125 70 160 70 215 C70 260 100 270 145 270 C165 270 170 240 170 215 C170 165 155 125 140 125 Z" fill="#ef4444" opacity="0.85" />
+                <circle cx="120" cy="200" r="16" fill="#f87171" opacity="0.6" />
+                <circle cx="138" cy="235" r="12" fill="#f87171" opacity="0.6" />
+              </g>
+              <!-- Right Lung -->
+              <g id="rightLungGroup" class="lung-breathing origin-center">
+                <path d="M260 125 C290 125 330 160 330 215 C330 260 300 270 255 270 C235 270 230 240 230 215 C230 165 245 125 260 125 Z" fill="#ef4444" opacity="0.85" />
+                <circle cx="280" cy="200" r="16" fill="#f87171" opacity="0.6" />
+                <circle cx="262" cy="235" r="12" fill="#f87171" opacity="0.6" />
+              </g>
+              <!-- Air particles indicators -->
+              <g id="airFlowParticles">
+                <circle cx="200" cy="50" r="4" fill="#38bdf8" />
+                <circle cx="200" cy="75" r="4" fill="#38bdf8" />
+              </g>
+              <!-- Diaphragm -->
+              <path id="diaphragmCurve" class="diaphragm-moving" d="M80 290 Q200 255 320 290" stroke="#f59e0b" stroke-width="12" fill="none" stroke-linecap="round"/>
+              <text x="200" y="315" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="bold">Diafragma</text>
+            </svg>
+            <div id="airflowIndicatorText" class="absolute bottom-2 left-4 text-[11px] font-mono text-cyan-400 bg-slate-800/80 px-2 py-1 rounded">
+              Arah Aliran: Udara Masuk (Oksigen Tinggi)
+            </div>
+          </div>
+
+          <!-- Controls for mechanics -->
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button onclick="setBreathingPhase('inhale')" id="btnInhale" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold bg-brand-600 text-white shadow-sm hover:bg-brand-700 transition">
+              Tarik Nafas (Inhalasi)
+            </button>
+            <button onclick="setBreathingPhase('exhale')" id="btnExhale" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+              Hembus Nafas (Ekshalasi)
+            </button>
+            <button onclick="toggleAutoBreathing()" id="btnAutoBreath" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-white hover:bg-slate-900 transition flex items-center gap-1.5">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Auto
+            </button>
+          </div>
+        </div>
+
+        <!-- Explanation & Anatomy Comparison Column -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="layers" class="w-5 h-5 text-tech-600"></i> Perbandingan Mekanisme Pernafasan
+            </h3>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5 font-bold">Ciri-ciri</th>
+                    <th class="p-2.5 font-bold text-brand-700">Menarik Nafas</th>
+                    <th class="p-2.5 font-bold text-rose-700">Menghembus Nafas</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Otot Interkostal Luar</td>
+                    <td class="p-2.5">Mengecut</td>
+                    <td class="p-2.5">Mengendur</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Otot Interkostal Dalam</td>
+                    <td class="p-2.5">Mengendur</td>
+                    <td class="p-2.5">Mengecut</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Sangkar Rusuk</td>
+                    <td class="p-2.5">Bergerak ke atas & ke luar</td>
+                    <td class="p-2.5">Bergerak ke bawah & ke dalam</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Diafragma</td>
+                    <td class="p-2.5">Mengecut dan mendatar</td>
+                    <td class="p-2.5">Mengendur dan melengkung ke atas</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Isi Padu Rongga Toraks</td>
+                    <td class="p-2.5 text-brand-700 font-semibold">Bertambah</td>
+                    <td class="p-2.5 text-rose-700 font-semibold">Berkurang</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-medium text-slate-900">Tekanan Udara Rongga Toraks</td>
+                    <td class="p-2.5">Menurun (kurang dari atmosfera)</td>
+                    <td class="p-2.5">Meningkat (lebih dari atmosfera)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Alveolus Interactive Feature Card -->
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50/50 p-6 rounded-2xl border border-blue-100">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-tech-600 text-white flex items-center justify-center flex-shrink-0 shadow">
+                <i data-lucide="circle-dot" class="w-6 h-6"></i>
+              </div>
+              <div class="space-y-2">
+                <h4 class="font-bold text-slate-900 text-sm sm:text-base">Kecekapan Pertukaran Gas di Alveolus</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Pertukaran gas berlaku melalui <strong>resapan ringkas</strong> mengikut kecerunan kepekatan. Ciri-ciri penyesuaian alveolus yang amat penting untuk resusitasi:
+                </p>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                  <div class="bg-white p-2.5 rounded-lg border border-blue-200/60 text-xs">
+                    <span class="font-bold text-tech-700 block">Dinding 1 Sel</span>
+                    Resapan gas yang sangat pantas.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-blue-200/60 text-xs">
+                    <span class="font-bold text-tech-700 block">Permukaan Lembap</span>
+                    Gas larut sebelum meresap.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-blue-200/60 text-xs">
+                    <span class="font-bold text-tech-700 block">Jaringan Kapilari</span>
+                    Bekalan darah berterusan.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-blue-200/60 text-xs">
+                    <span class="font-bold text-tech-700 block">Luas Permukaan Besar</span>
+                    Berjuta-juta kantung alveolus.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODUL 4.1: TEKNIK PEMULIHAN PERNAFASAN (CPR)
+         ========================================== -->
+    <section id="tab-4-1" class="tab-content hidden space-y-8">
+      <!-- Section Hero -->
+      <div class="bg-gradient-to-br from-rose-900 via-slate-900 to-slate-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+          <i data-lucide="heart-pulse" class="w-96 h-96"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-semibold mb-4 border border-rose-500/30">
+            <i data-lucide="heart" class="w-3.5 h-3.5"></i> Modul 4.1
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">Teknik Resusitasi Kardiopulmonari (CPR)</h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            CPR ialah tindakan kecemasan gabungan tekanan dada dan bantuan pernafasan bagi mengekalkan peredaran darah beroksigen ke otak dan jantung apabila denyutan nadi atau pernafasan terhenti.
+          </p>
+        </div>
+      </div>
+
+      <!-- Protokol DRCAB Steps Interactive Timeline -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">Protokol Penyelamatan: Prinsip D.R.C.A.B</h3>
+            <p class="text-xs text-slate-500">Garis panduan standard bantuan awal kecemasan antarabangsa.</p>
+          </div>
+          <span class="text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">Kecemasan Hidup</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <!-- Danger -->
+          <div class="p-4 rounded-xl border border-slate-200 hover:border-rose-400 bg-slate-50 transition relative group">
+            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-3">D</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Danger (Bahaya)</h4>
+            <p class="text-xs text-slate-600 leading-normal">Pastikan persekitaran selamat untuk penyelamat, mangsa, dan orang awam sebelum bertindak.</p>
+          </div>
+          <!-- Response -->
+          <div class="p-4 rounded-xl border border-slate-200 hover:border-rose-400 bg-slate-50 transition relative group">
+            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-3">R</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Response (Tindak Balas)</h4>
+            <p class="text-xs text-slate-600 leading-normal">Tepuk bahu mangsa dan tanya dengan lantang: <em>"Encik/Cik, adakah anda okey?"</em>.</p>
+          </div>
+          <!-- Compression -->
+          <div class="p-4 rounded-xl border-2 border-rose-500 bg-rose-50/40 relative shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center font-bold text-sm mb-3">C</div>
+            <h4 class="font-bold text-rose-950 text-sm mb-1">Compressions (Tekanan)</h4>
+            <p class="text-xs text-slate-700 leading-normal">30 tekanan dada berkualiti tinggi: kedalaman 5-6 cm, kadar 100-120 mampatan seminit.</p>
+          </div>
+          <!-- Airway -->
+          <div class="p-4 rounded-xl border border-slate-200 hover:border-rose-400 bg-slate-50 transition relative group">
+            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-3">A</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Airway (Salur Udara)</h4>
+            <p class="text-xs text-slate-600 leading-normal">Dongakkan kepala dan angkat dagu (Head-tilt, Chin-lift) untuk membuka saluran pernafasan.</p>
+          </div>
+          <!-- Breathing -->
+          <div class="p-4 rounded-xl border border-slate-200 hover:border-rose-400 bg-slate-50 transition relative group">
+            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-3">B</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Breathing (Pernafasan)</h4>
+            <p class="text-xs text-slate-600 leading-normal">Beri 2 hembusan nafas bantuan (setiap hembusan 1 saat) hingga melihat dada naik.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive CPR Hands-on Metronome & Rhythm Trainer -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Metronome & Compression Widget -->
+        <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
+                <h3 class="text-base font-bold text-slate-900">Simulator Rentak Tekanan Dada (Metronom 110 BPM)</h3>
+              </div>
+              <span id="cprCycleBadge" class="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md">Kitaran: 0 / 5</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-6">
+              Tekan butang ritma atau latih irama CPR mengikut rentak lagu <em>"Stayin' Alive"</em> (~100-120 rentak seminit). Web Audio API mensimulasikan bunyi metronom sebenar peranti AED.
+            </p>
+          </div>
+
+          <div class="bg-slate-950 rounded-2xl p-6 text-center text-white relative overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
+            <div id="cprBeepVisual" class="w-24 h-24 rounded-full border-4 border-slate-700 flex items-center justify-center mb-4 transition-all duration-100">
+              <i data-lucide="heart" id="cprHeartIcon" class="w-10 h-10 text-rose-500"></i>
+            </div>
+            
+            <div class="text-3xl font-extrabold font-mono tracking-wider mb-1" id="compressionCounterDisplay">
+              0 <span class="text-xs font-sans text-slate-400 font-normal">/ 30 Tekanan</span>
+            </div>
+            <p id="cprInstructionPrompt" class="text-xs text-slate-400 font-medium">Klik "Mula Metronom" untuk mendengar dan mempraktikkan rentak</p>
+          </div>
+
+          <!-- Metronome Controls -->
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button onclick="toggleCprMetronome()" id="btnCprMetronome" class="flex-1 py-3 px-5 rounded-xl font-bold text-sm bg-rose-600 text-white hover:bg-rose-700 transition flex items-center justify-center gap-2 shadow-sm">
+              <i data-lucide="play" id="cprPlayIcon" class="w-4 h-4"></i>
+              <span id="cprPlayText">Mula Metronom (Audio)</span>
+            </button>
+            <button onclick="recordManualPress()" class="py-3 px-6 rounded-xl font-bold text-sm bg-slate-800 text-white hover:bg-slate-900 transition flex items-center gap-2 active:scale-95 shadow">
+              <i data-lucide="hand" class="w-4 h-4 text-rose-400"></i>
+              <span>Tekan Mampatan (Uji Ketepatan)</span>
+            </button>
+            <button onclick="resetCprSession()" class="py-3 px-4 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Realtime Accuracy Feedback -->
+          <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+            <span class="text-slate-600 font-medium">BPM Anda: <strong id="userCalculatedBpm" class="text-slate-900 font-mono">0 BPM</strong></span>
+            <span id="bpmQualityFeedback" class="font-bold text-amber-600">Sedia untuk mampatan</span>
+          </div>
+        </div>
+
+        <!-- Essential CPR Rules & AED Guide -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+              <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i> Kualiti Tekanan Dada (High-Quality CPR)
+            </h4>
+            <ul class="space-y-2.5 text-xs text-slate-600">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span><strong>Kedalaman:</strong> 5 cm hingga tidak melebihi 6 cm (untuk dewasa).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span><strong>Lenting Semula Penuh (Full Recoil):</strong> Benarkan dada kembali ke posisi asal sepenuhnya selepas setiap tekanan.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span><strong>Minimakan Gangguan:</strong> Jangan berhenti mampatan melebihi 10 saat.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span><strong>Elak Pengudaraan Berlebihan:</strong> Hembus nafas sekadar melihat kenaikan dada mangsa.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-200">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 font-bold">
+                <i data-lucide="zap" class="w-5 h-5"></i>
+              </div>
+              <div class="space-y-1">
+                <h5 class="font-bold text-amber-950 text-sm">Integrasi Bersama AED (Defibrilator)</h5>
+                <p class="text-xs text-amber-900/80 leading-relaxed">
+                  Sebaik sahaja AED tiba di tempat kejadian, pasangkan pad elektrod serta-merta tanpa melambatkan CPR. Ikuti arahan suara AED:
+                </p>
+                <div class="pt-2 text-xs font-medium text-amber-900 flex flex-col gap-1">
+                  <span>1. Pasang pad: Kanan atas dada & kiri bawah rusuk.</span>
+                  <span>2. Jangan sentuh mangsa semasa AED menganalisis irama jantung.</span>
+                  <span>3. Jika kejutan (shock) disyorkan, pastikan semua orang berundur ("Clear!").</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODUL 4.2: PATAH TULANG, ANDUHAN & PEMINDAHAN MANGSA
+         ========================================== -->
+    <section id="tab-4-2" class="tab-content hidden space-y-8">
+      <!-- Section Hero -->
+      <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+          <i data-lucide="shield-alert" class="w-96 h-96"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-4 border border-indigo-500/30">
+            <i data-lucide="shield" class="w-3.5 h-3.5"></i> Modul 4.2
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">Patah Tulang, Anduhan & Pemindahan Mangsa</h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Kuasai kemahiran mengendalikan kecederaan muskuloskeletal, kaedah pembebatan anduhan segi tiga (splinting), serta teknik mengangkat dan memindahkan mangsa secara selamat mengikut situasi persekitaran.
+          </p>
+        </div>
+      </div>
+
+      <!-- Fractures Classification & Interactive Splinting -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Patah Terbuka vs Tertutup -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="bone" class="w-5 h-5 text-indigo-600"></i> Klasifikasi Patah Tulang (Fraktur)
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Jenis 1</span>
+              <h4 class="font-bold text-slate-900 text-sm mb-1">Patah Tertutup</h4>
+              <p class="text-xs text-slate-600">Tulang patah di dalam tanpa merobek kulit. Tanda: Bengkak, lebam, bentuk anggota abnormal, rasa sakit apabila disentuh.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+              <span class="text-xs font-bold text-rose-500 uppercase tracking-wider block mb-1">Jenis 2 (Kritikal)</span>
+              <h4 class="font-bold text-rose-950 text-sm mb-1">Patah Terbuka</h4>
+              <p class="text-xs text-rose-800">Tulang menembusi kulit mengakibatkan luka berdarah. Risiko jangkitan kuman dan pendarahan arteri yang tinggi.</p>
+            </div>
+          </div>
+          <div class="p-3.5 bg-indigo-50/60 rounded-xl text-xs text-indigo-900 border border-indigo-100 flex items-start gap-2.5">
+            <i data-lucide="info" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <strong>Prinsip Rawatan:</strong> Jangan cuba memasukkan kembali tulang patah yang terkeluar! Hentikan pendarahan terlebih dahulu dan imobilisasikan sendi di atas dan di bawah bahagian patah.
+            </div>
+          </div>
+        </div>
+
+        <!-- Kaedah R.I.C.E. untuk Terseliuh/Retak -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="thermometer-snowflake" class="w-5 h-5 text-indigo-600"></i> Prinsip Rawatan R.I.C.E
+          </h3>
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <strong class="text-slate-900 text-sm block mb-1">R - Rest (Rehat)</strong>
+              Hentikan aktiviti dengan serta-merta pada anggota yang tercedera.
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <strong class="text-slate-900 text-sm block mb-1">I - Ice (Ais)</strong>
+              Tuam ais (15-20 minit) berbalut tuala untuk menyempitkan salur darah.
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <strong class="text-slate-900 text-sm block mb-1">C - Compression (Tekanan)</strong>
+              Balut dengan pembalut elastik untuk kurangkan kebengkakan.
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <strong class="text-slate-900 text-sm block mb-1">E - Elevation (Tinggikan)</strong>
+              Tinggikan anggota melebihi paras jantung jika tiada patah teruk.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Anduhan (Sling) & Victim Transport Guide -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">Panduan Praktikal: Jenis Anduhan & Cara Pemindahan</h3>
+            <p class="text-xs text-slate-500">Pilih jenis teknik untuk memaparkan panduan langkah demi langkah.</p>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+            <button onclick="setTechniqueCategory('anduhan')" id="btnCatAnduhan" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 transition">Jenis Anduhan</button>
+            <button onclick="setTechniqueCategory('pemindahan')" id="btnCatPemindahan" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition">Cara Pemindahan</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Content Card -->
+        <div id="techniqueDisplayContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODUL 4.3: APLIKASI KECERDASAN BUATAN (AI)
+         ========================================== -->
+    <section id="tab-4-3" class="tab-content hidden space-y-8">
+      <!-- Section Hero -->
+      <div class="bg-gradient-to-br from-cyan-950 via-slate-900 to-slate-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+          <i data-lucide="cpu" class="w-96 h-96"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-semibold mb-4 border border-cyan-500/30">
+            <i data-lucide="bot" class="w-3.5 h-3.5"></i> Modul 4.3 (Teknologi Terkini)
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">Aplikasi AI Dalam Pemulihan Pernafasan</h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Revolusi digital mentransformasi bidang pertolongan cemas. Dari analisis ECG berkuasa Model AI, penderiaan visual postur CPR telefon pintar, hingga pengesanan pernafasan agonal melalui panggilan kecemasan 999.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 Core AI Application Pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- AI Card 1 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
+            <i data-lucide="scan-face" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-base mb-2">Computer Vision Maklum Balas CPR</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Kamera telefon pintar atau cermin mata pintar menggunakan model <em>Pose Estimation</em> untuk mengukur sudut lengan 90°, kedalaman mampatan dada, dan kadar lentingan secara langsung tanpa sebarang sensor fizikal.
+          </p>
+          <span class="text-[11px] font-mono font-semibold text-cyan-700 bg-cyan-50 px-2.5 py-1 rounded-md">Ketepatan: > 96%</span>
+        </div>
+
+        <!-- AI Card 2 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
+            <i data-lucide="waveform" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-base mb-2">Analisis Akustik Nafas (Agonal Breathing)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Algoritma pemprosesan audio pada sistem panggilan kecemasan mengesan desahan nafas terakhir (gasping/agonal breath) pemanggil dalam masa nyata untuk mengerahkan ambulans dan membimbing CPR seawal 10 saat.
+          </p>
+          <span class="text-[11px] font-mono font-semibold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md">Deep Learning Audio</span>
+        </div>
+
+        <!-- AI Card 3 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center mb-4">
+            <i data-lucide="zap" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-base mb-2">Smart AED & Prediksi Aritmia</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Peranti AED generasi baharu dikuasakan model Transformer padat yang menganalisis gelombang ECG bagi membezakan Ventricular Fibrillation (VF) dengan artefak gerakan CPR secara serta-merta tanpa menghentikan tekanan.
+          </p>
+          <span class="text-[11px] font-mono font-semibold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md">Zero-Pause Defibrillator</span>
+        </div>
+      </div>
+
+      <!-- Interactive AI Quality Assessor Simulation Widget -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-tech-600"></i> Simulator Interaktif Maklum Balas Kualiti CPR Berasaskan AI
+            </h3>
+            <p class="text-xs text-slate-500">Ubah parameter sensor di bawah untuk melihat bagaimana sistem AI menganalisis dan memberi bimbingan audio-visual adaptif masa nyata.</p>
+          </div>
+          <span class="text-xs font-mono font-bold px-2.5 py-1 bg-tech-50 text-tech-700 rounded-md border border-tech-200">AI Model v3.4 Active</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+          <!-- Control Sliders Column -->
+          <div class="lg:col-span-6 space-y-5">
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1.5 text-slate-700">
+                <span>Kedalaman Tekanan (Depth):</span>
+                <span id="labelDepthVal" class="text-tech-600 font-mono">5.4 cm</span>
+              </div>
+              <input type="range" id="inputDepth" min="2.0" max="8.0" step="0.1" value="5.4" oninput="updateAiEvaluation()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-tech-600">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                <span>Terlalu Cetek (<4.5cm)</span>
+                <span>Optimum (5 - 6 cm)</span>
+                <span>Terlalu Dalam (>6.5cm)</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1.5 text-slate-700">
+                <span>Kadar Tekanan (Rate):</span>
+                <span id="labelRateVal" class="text-tech-600 font-mono">112 BPM</span>
+              </div>
+              <input type="range" id="inputRate" min="60" max="160" step="1" value="112" oninput="updateAiEvaluation()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-tech-600">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                <span>Perlahan (<100)</span>
+                <span>Sesuai (100 - 120 BPM)</span>
+                <span>Terlalu Laju (>120)</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1.5 text-slate-700">
+                <span>Lentingan Dada (Recoil):</span>
+                <span id="labelRecoilVal" class="text-tech-600 font-mono">Penuh (100%)</span>
+              </div>
+              <input type="range" id="inputRecoil" min="40" max="100" step="5" value="100" oninput="updateAiEvaluation()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-tech-600">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                <span>Lentingan Tidak Sempurna</span>
+                <span>Lentingan Sempurna (100%)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Inference Engine Result Display -->
+          <div class="lg:col-span-6 bg-slate-900 rounded-2xl p-6 text-white flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <span class="text-xs font-mono text-cyan-400 flex items-center gap-1.5">
+                  <i data-lucide="cpu" class="w-4 h-4"></i> AI Real-Time Guidance Engine
+                </span>
+                <span id="aiScoreBadge" class="text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">SKOR: 98%</span>
+              </div>
+
+              <!-- AI Output Message -->
+              <div class="space-y-3">
+                <div class="text-xs text-slate-400 font-medium">Bimbingan Suara AI:</div>
+                <div id="aiVoicePromptBox" class="p-4 rounded-xl bg-slate-800/90 border border-slate-700 text-sm font-semibold text-emerald-300 flex items-start gap-3">
+                  <i data-lucide="volume-2" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                  <span id="aiVoiceMessage">"Kualiti tekanan dada cemerlang! Kekalkan irama dan kedalaman ini."</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnostics Matrix -->
+            <div class="grid grid-cols-3 gap-2 pt-4 border-t border-slate-800 mt-6 text-center text-xs">
+              <div class="bg-slate-800/50 p-2 rounded-lg">
+                <span class="text-slate-400 block text-[10px]">Kedalaman</span>
+                <span id="diagDepth" class="font-bold text-emerald-400">Optimum</span>
+              </div>
+              <div class="bg-slate-800/50 p-2 rounded-lg">
+                <span class="text-slate-400 block text-[10px]">Irama BPM</span>
+                <span id="diagRate" class="font-bold text-emerald-400">Tepat</span>
+              </div>
+              <div class="bg-slate-800/50 p-2 rounded-lg">
+                <span class="text-slate-400 block text-[10px]">Lentingan</span>
+                <span id="diagRecoil" class="font-bold text-emerald-400">Sempurna</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODUL PENTAKSIRAN / KUIZ INTERAKTIF
+         ========================================== -->
+    <section id="tab-quiz" class="tab-content hidden space-y-8">
+      <div class="bg-gradient-to-br from-slate-900 via-brand-950 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-semibold mb-4 border border-brand-500/30">
+            <i data-lucide="award" class="w-3.5 h-3.5"></i> Pentaksiran Formatif
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">Ujian Kefahaman Modul 4.0 - 4.3</h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Uji sejauh mana kefahaman anda mengenai sistem respirasi manusia, protokol resusitasi CPR, rawatan patah tulang/anduhan, dan implementasi teknologi AI.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-4xl mx-auto">
+        <div id="quizContainer">
+          <!-- Quiz header info -->
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+            <span class="text-xs font-bold text-slate-500 tracking-wide uppercase">Soalan <span id="currentQuestionNum">1</span> daripada <span id="totalQuestionsNum">5</span></span>
+            <span id="quizScoreTracker" class="text-xs font-bold text-brand-700 bg-brand-50 px-3 py-1 rounded-full border border-brand-200">Skor: 0</span>
+          </div>
+
+          <!-- Question Box -->
+          <div id="quizQuestionBox" class="mb-6">
+            <h3 id="questionText" class="text-base sm:text-lg font-bold text-slate-900 mb-4">Memuat soalan...</h3>
+            <div id="optionsContainer" class="space-y-3">
+              <!-- Dynamically populated buttons -->
+            </div>
+          </div>
+
+          <!-- Explanation Box -->
+          <div id="quizExplanationBox" class="hidden p-4 rounded-xl bg-slate-50 border border-slate-200 mb-6 text-xs text-slate-700 leading-relaxed">
+            <!-- Explanation injected -->
+          </div>
+
+          <!-- Quiz Action button -->
+          <div class="flex justify-end">
+            <button id="btnNextQuestion" onclick="goToNextQuestion()" class="hidden px-5 py-2.5 rounded-xl font-bold text-sm bg-brand-600 text-white hover:bg-brand-700 transition">
+              Soalan Seterusnya
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Completion Screen -->
+        <div id="quizResultsScreen" class="hidden text-center py-8 space-y-4">
+          <div class="w-16 h-16 rounded-full bg-brand-100 text-brand-600 mx-auto flex items-center justify-center font-bold">
+            <i data-lucide="check-circle" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900">Tahniah! Anda telah selesai menjawab.</h3>
+          <p id="quizFinalScoreSummary" class="text-sm text-slate-600">Skor anda: 5 / 5 (100%)</p>
+          <div class="pt-4">
+            <button onclick="restartQuiz()" class="px-6 py-2.5 rounded-xl font-bold text-sm bg-slate-900 text-white hover:bg-slate-800 transition">
+              Ulang Semula Kuiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Quick Help Modal (No alert/confirm used) -->
+  <div id="quickHelpModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-100">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h4 class="font-bold text-slate-900 text-base flex items-center gap-2">
+          <i data-lucide="info" class="w-5 h-5 text-brand-600"></i> Panduan Pantas Platform
+        </h4>
+        <button onclick="closeModal('quickHelpModal')" class="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>1. Navigasi Modul:</strong> Gunakan tab di bahagian atas untuk beralih antara topik (4.0 hingga 4.3 dan Kuiz).</p>
+        <p><strong>2. Audio CPR Metronom:</strong> Klik butang 'Mula Metronom' pada Modul 4.1. Pelayar akan menghasilkan denyutan bip audio sintetik pada kadar 110 BPM untuk latihan ritma mampatan.</p>
+        <p><strong>3. Simulasi AI:</strong> Pada Modul 4.3, laraskan slider kedalaman dan kadar mampatan untuk menguji keupayaan kecerdasan buatan dalam mengesan kualiti resusitasi.</p>
+      </div>
+      <div class="pt-2">
+        <button onclick="closeModal('quickHelpModal')" class="w-full py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition">
+          Faham, Teruskan Pembelajaran
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+      <p>Hub Pembelajaran Interaktif Pertolongan Cemas & Sistem Pernafasan Manusia &bull; Berpandukan Kurikulum KSSM & Protokol Bantuan Hidup Asas (BLS)</p>
+    </div>
+  </footer>
+
+  <script>
+    // State management
+    const state = {
+      activeTab: 'tab-4-0',
+      autoBreathing: true,
+      breathInterval: null,
+      cprMetronomeActive: false,
+      cprInterval: null,
+      cprAudioCtx: null,
+      cprCount: 0,
+      cprCycles: 0,
+      pressTimestamps: [],
+      activeTechniqueCategory: 'anduhan',
+      quizIndex: 0,
+      quizScore: 0,
+      quizAnswered: false,
+      completedModules: {
+        'tab-4-0': true,
+        'tab-4-1': false,
+        'tab-4-2': false,
+        'tab-4-3': false,
+        'tab-quiz': false
+      }
+    };
+
+    // Helper: Show custom Toast (Avoid native alert)
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        info: 'bg-slate-900 text-white border-slate-800',
+        success: 'bg-emerald-600 text-white border-emerald-700',
+        warning: 'bg-amber-600 text-white border-amber-700',
+        danger: 'bg-rose-600 text-white border-rose-700'
+      };
+
+      toast.className = `px-4 py-3 rounded-xl text-xs font-medium shadow-lg border flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0 ${colors[type] || colors.info}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      }
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }
+    }
+
+    // Switch Tabs
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      state.completedModules[tabId] = true;
+      updateOverallProgress();
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById(tabId);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      // Update button styling
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-50', 'text-brand-700', 'border', 'border-brand-200');
+        btn.classList.add('text-slate-600');
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600');
+        activeBtn.classList.add('bg-brand-50', 'text-brand-700', 'border', 'border-brand-200');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateOverallProgress() {
+      const keys = Object.keys(state.completedModules);
+      const done = keys.filter(k => state.completedModules[k]).length;
+      const pct = Math.round((done / keys.length) * 100);
+      
+      const bar = document.getElementById('progressBar');
+      const text = document.getElementById('progressText');
+      if (bar) bar.style.width = `${pct}%`;
+      if (text) text.innerText = `${pct}%`;
+    }
+
+    // Modul 4.0: Breathing Dynamics
+    function setBreathingPhase(phase) {
+      const leftLung = document.getElementById('leftLungGroup');
+      const rightLung = document.getElementById('rightLungGroup');
+      const diaphragm = document.getElementById('diaphragmCurve');
+      const badge = document.getElementById('breathPhaseBadge');
+      const flowText = document.getElementById('airflowIndicatorText');
+      const btnIn = document.getElementById('btnInhale');
+      const btnEx = document.getElementById('btnExhale');
+
+      if (phase === 'inhale') {
+        leftLung.style.transform = 'scale(1.2)';
+        rightLung.style.transform = 'scale(1.2)';
+        diaphragm.style.transform = 'translateY(14px)';
+        badge.innerText = 'Tarik Nafas';
+        badge.className = 'px-2.5 py-1 text-xs font-bold rounded-full bg-teal-100 text-teal-800';
+        flowText.innerText = 'Arah Aliran: Udara Masuk (Oksigen 21% -> Alveolus)';
+        
+        btnIn.classList.replace('bg-slate-100', 'bg-brand-600');
+        btnIn.classList.replace('text-slate-700', 'text-white');
+        btnEx.classList.replace('bg-brand-600', 'bg-slate-100');
+        btnEx.classList.replace('text-white', 'text-slate-700');
+      } else {
+        leftLung.style.transform = 'scale(0.92)';
+        rightLung.style.transform = 'scale(0.92)';
+        diaphragm.style.transform = 'translateY(-4px)';
+        badge.innerText = 'Hembus Nafas';
+        badge.className = 'px-2.5 py-1 text-xs font-bold rounded-full bg-rose-100 text-rose-800';
+        flowText.innerText = 'Arah Aliran: Udara Keluar (Karbon Dioksida 4% Disingkirkan)';
+        
+        btnEx.classList.replace('bg-slate-100', 'bg-brand-600');
+        btnEx.classList.replace('text-slate-700', 'text-white');
+        btnIn.classList.replace('bg-brand-600', 'bg-slate-100');
+        btnIn.classList.replace('text-white', 'text-slate-700');
+      }
+    }
+
+    function toggleAutoBreathing() {
+      const leftLung = document.getElementById('leftLungGroup');
+      const rightLung = document.getElementById('rightLungGroup');
+      const diaphragm = document.getElementById('diaphragmCurve');
+      const btn = document.getElementById('btnAutoBreath');
+
+      state.autoBreathing = !state.autoBreathing;
+      if (state.autoBreathing) {
+        leftLung.classList.add('lung-breathing');
+        rightLung.classList.add('lung-breathing');
+        diaphragm.classList.add('diaphragm-moving');
+        btn.classList.replace('bg-slate-200', 'bg-slate-800');
+        btn.classList.replace('text-slate-800', 'text-white');
+        showToast('Animasi pernafasan automatik diaktifkan.', 'info');
+      } else {
+        leftLung.classList.remove('lung-breathing');
+        rightLung.classList.remove('lung-breathing');
+        diaphragm.classList.remove('diaphragm-moving');
+        btn.classList.replace('bg-slate-800', 'bg-slate-200');
+        btn.classList.replace('text-white', 'text-slate-800');
+        showToast('Mod manual. Tekan butang Tarik / Hembus nafas.', 'info');
+      }
+    }
+
+    // Modul 4.1: Audio Metronome using Web Audio API Synth (No external audio file needed)
+    function playCprBeep() {
+      try {
+        if (!state.cprAudioCtx) {
+          state.cprAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (state.cprAudioCtx.state === 'suspended') {
+          state.cprAudioCtx.resume();
+        }
+        const osc = state.cprAudioCtx.createOscillator();
+        const gain = state.cprAudioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, state.cprAudioCtx.currentTime); // 880 Hz crisp beep
+        gain.gain.setValueAtTime(0.2, state.cprAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, state.cprAudioCtx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(state.cprAudioCtx.destination);
+        osc.start();
+        osc.stop(state.cprAudioCtx.currentTime + 0.08);
+      } catch (e) {
+        console.warn('Audio Context error:', e);
+      }
+
+      // Visual flash animation
+      const visual = document.getElementById('cprBeepVisual');
+      const heart = document.getElementById('cprHeartIcon');
+      if (visual && heart) {
+        visual.classList.add('scale-110', 'border-rose-500', 'bg-rose-500/10');
+        heart.classList.add('scale-125');
+        setTimeout(() => {
+          visual.classList.remove('scale-110', 'border-rose-500', 'bg-rose-500/10');
+          heart.classList.remove('scale-125');
+        }, 120);
+      }
+    }
+
+    function toggleCprMetronome() {
+      const btnText = document.getElementById('cprPlayText');
+      const btnIcon = document.getElementById('cprPlayIcon');
+      const btn = document.getElementById('btnCprMetronome');
+
+      if (!state.cprMetronomeActive) {
+        state.cprMetronomeActive = true;
+        btnText.innerText = 'Hentikan Metronom';
+        btn.classList.replace('bg-rose-600', 'bg-slate-800');
+        btnIcon.setAttribute('data-lucide', 'square');
+        lucide.createIcons();
+
+        // 110 BPM = 60000 / 110 = 545.45 ms
+        playCprBeep();
+        state.cprInterval = setInterval(() => {
+          playCprBeep();
+        }, 545);
+
+        showToast('Metronom CPR bermula pada 110 denyutan seminit.', 'success');
+      } else {
+        stopCprMetronome();
+      }
+    }
+
+    function stopCprMetronome() {
+      state.cprMetronomeActive = false;
+      if (state.cprInterval) clearInterval(state.cprInterval);
+      const btnText = document.getElementById('cprPlayText');
+      const btnIcon = document.getElementById('cprPlayIcon');
+      const btn = document.getElementById('btnCprMetronome');
+
+      if (btnText && btn) {
+        btnText.innerText = 'Mula Metronom (Audio)';
+        btn.classList.replace('bg-slate-800', 'bg-rose-600');
+        btnIcon.setAttribute('data-lucide', 'play');
+        lucide.createIcons();
+      }
+    }
+
+    function recordManualPress() {
+      const now = performance.now();
+      state.pressTimestamps.push(now);
+      if (state.pressTimestamps.length > 6) {
+        state.pressTimestamps.shift();
+      }
+
+      state.cprCount++;
+      if (state.cprCount > 30) {
+        state.cprCount = 1;
+        state.cprCycles++;
+        showToast('30 Tekanan selesai! Berikan 2 hembusan nafas bantuan (30:2).', 'info');
+      }
+
+      // Calculate cadence BPM
+      if (state.pressTimestamps.length >= 2) {
+        const intervals = [];
+        for (let i = 1; i < state.pressTimestamps.length; i++) {
+          intervals.push(state.pressTimestamps[i] - state.pressTimestamps[i - 1]);
+        }
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const currentBpm = Math.round(60000 / avgInterval);
+        
+        document.getElementById('userCalculatedBpm').innerText = `${currentBpm} BPM`;
+        const feedback = document.getElementById('bpmQualityFeedback');
+
+        if (currentBpm >= 100 && currentBpm <= 120) {
+          feedback.innerText = 'Rentak Sempurna (100 - 120 BPM)!';
+          feedback.className = 'font-bold text-emerald-600';
+        } else if (currentBpm < 100) {
+          feedback.innerText = 'Terlalu Perlahan! Laju sedikit.';
+          feedback.className = 'font-bold text-amber-600';
+        } else {
+          feedback.innerText = 'Terlalu Pantas! Kawal kelajuan.';
+          feedback.className = 'font-bold text-rose-600';
+        }
+      }
+
+      // Update counters
+      document.getElementById('compressionCounterDisplay').innerHTML = `${state.cprCount} <span class="text-xs font-sans text-slate-400 font-normal">/ 30 Tekanan</span>`;
+      document.getElementById('cprCycleBadge').innerText = `Kitaran: ${state.cprCycles} / 5`;
+
+      // Trigger single visual pulse
+      const visual = document.getElementById('cprBeepVisual');
+      if (visual) {
+        visual.classList.add('border-emerald-500');
+        setTimeout(() => visual.classList.remove('border-emerald-500'), 100);
+      }
+    }
+
+    function resetCprSession() {
+      stopCprMetronome();
+      state.cprCount = 0;
+      state.cprCycles = 0;
+      state.pressTimestamps = [];
+      document.getElementById('compressionCounterDisplay').innerHTML = `0 <span class="text-xs font-sans text-slate-400 font-normal">/ 30 Tekanan</span>`;
+      document.getElementById('cprCycleBadge').innerText = `Kitaran: 0 / 5`;
+      document.getElementById('userCalculatedBpm').innerText = `0 BPM`;
+      document.getElementById('bpmQualityFeedback').innerText = `Sedia untuk mampatan`;
+      document.getElementById('bpmQualityFeedback').className = 'font-bold text-amber-600';
+      showToast('Sesi latihan CPR diset semula.', 'info');
+    }
+
+    // Modul 4.2: Data & Renderer for Anduhan & Pemindahan Mangsa
+    const techniquesData = {
+      anduhan: [
+        {
+          title: 'Anduhan Besar (Arm Sling)',
+          desc: 'Untuk menyokong kecederaan tulang lengan bawah (radius/ulna), pergelangan tangan, atau tulang rusuk.',
+          steps: [
+            'Letakkan kain anduhan segitiga di antara badan dan tangan yang tercedera.',
+            'Puncak anduhan berada di bahagian siku tangan tercedera.',
+            'Bawa bucu bawah kain ke atas bahu dan ikat simpul sila di bahagian lekuk leher.',
+            'Lipat dan kemaskan bahagian puncak siku dengan pin keselamatan atau sematan.'
+          ],
+          badge: 'Paling Kerap Digunakan'
+        },
+        {
+          title: 'Anduhan Tiga Segi (Collar & Cuff)',
+          desc: 'Menyokong anggota atas apabila terdapat patah pada tulang selangka (klavikel) atau humerus.',
+          steps: [
+            'Letakkan tangan mangsa menyilang ke dada menghala ke bahu yang bertentangan.',
+            'Gunakan ikatan simpulan kolar dan cuff pada pergelangan tangan.',
+            'Ikat di sekeliling leher dengan lapik bagi mengelakkan geseran.',
+            'Pastikan peredaran darah pada jari-jemari mangsa sentiasa diperiksa.'
+          ],
+          badge: 'Fraktur Bahu/Selangka'
+        },
+        {
+          title: 'Anduhan Menegak (St. John Sling)',
+          desc: 'Digunakan khusus bagi pendarahan tapak tangan atau fraktur jari yang memerlukan peninggian anggota.',
+          steps: [
+            'Tangan mangsa diletakkan di dada dengan jari menyentuh bahu bertentangan.',
+            'Selubungi tangan dengan kain anduhan segitiga secara kemas.',
+            'Ikat simpulan di hadapan toraks untuk menampung keseluruhan berat lengan.',
+            'Jari mangsa sengaja didedahkan sedikit untuk memantau warna kuku (kapilari refill).'
+          ],
+          badge: 'Pendarahan/Elevasi'
+        }
+      ],
+      pemindahan: [
+        {
+          title: 'Kaedah Menopang (Human Crutch)',
+          desc: 'Untuk mangsa yang sedar dan hanya mengalami kecederaan ringan pada sebelah kaki.',
+          steps: [
+            'Penyelamat berdiri di sebelah anggota kaki mangsa yang cedera.',
+            'Rangkul tangan mangsa melepasi tengkuk penyelamat dan pegang pergelangan tangannya.',
+            'Tangan penyelamat yang satu lagi memegang pinggang mangsa dengan kukuh.',
+            'Langkah secara serentak mengikut rentak pergerakan mangsa.'
+          ],
+          badge: '1 Penyelamat (Sedar)'
+        },
+        {
+          title: 'Usungan Kerusi (Two-Handed Seat)',
+          desc: 'Untuk mangsa yang tidak boleh berjalan tetapi masih sedar dan memerlukan sokongan sandaran.',
+          steps: [
+            'Dua penyelamat saling memegang pergelangan tangan antara satu sama lain.',
+            'Satu tangan membentuk tempat duduk, manakala satu lagi menjadi sandaran belakang mangsa.',
+            'Mangsa meletakkan kedua-dua lengannya di atas bahu kedua-dua penyelamat.',
+            'Penyelamat bangun serentak menggunakan kekuatan lutut dan paha, bukan pinggang.'
+          ],
+          badge: '2 Penyelamat'
+        },
+        {
+          title: 'Angkatan Usungan (Stretcher Carry)',
+          desc: 'Kaedah paling selamat untuk mangsa tidak sedar atau disyaki patah tulang belakang/tulang paha.',
+          steps: [
+            'Pastikan usungan diuji kekukuhannya terlebih dahulu sebelum mengangkat mangsa.',
+            'Sekurang-kurangnya 4 orang penyelamat berada di setiap penjuru usungan.',
+            'Seorang komander memberi arahan: "Sedia... Angkat!" serentak.',
+            'Berjalan dengan langkah kaki berlawanan (out of step) untuk mengelakkan usungan berayun.'
+          ],
+          badge: 'Kecederaan Parah'
+        }
+      ]
+    };
+
+    function setTechniqueCategory(cat) {
+      state.activeTechniqueCategory = cat;
+      const btnAnduhan = document.getElementById('btnCatAnduhan');
+      const btnPemindahan = document.getElementById('btnCatPemindahan');
+
+      if (cat === 'anduhan') {
+        btnAnduhan.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 transition';
+        btnPemindahan.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition';
+      } else {
+        btnPemindahan.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 transition';
+        btnAnduhan.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition';
+      }
+
+      renderTechniques();
+    }
+
+    function renderTechniques() {
+      const container = document.getElementById('techniqueDisplayContainer');
+      const items = techniquesData[state.activeTechniqueCategory];
+
+      container.innerHTML = items.map((item, idx) => `
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-300 transition shadow-sm">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded border border-indigo-200">${item.badge}</span>
+              <span class="text-xs font-mono text-slate-400">#0${idx + 1}</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-sm mb-2">${item.title}</h4>
+            <p class="text-xs text-slate-600 mb-4 leading-relaxed">${item.desc}</p>
+            <div class="space-y-2 border-t border-slate-200/80 pt-3">
+              <span class="text-[11px] font-bold text-slate-700 block uppercase tracking-wider">Langkah Pelaksanaan:</span>
+              <ol class="space-y-1.5 text-xs text-slate-600 list-decimal list-inside leading-normal">
+                ${item.steps.map(step => `<li>${step}</li>`).join('')}
+              </ol>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modul 4.3: AI Resuscitation Evaluator Simulation
+    function updateAiEvaluation() {
+      const depth = parseFloat(document.getElementById('inputDepth').value);
+      const rate = parseInt(document.getElementById('inputRate').value);
+      const recoil = parseInt(document.getElementById('inputRecoil').value);
+
+      document.getElementById('labelDepthVal').innerText = `${depth.toFixed(1)} cm`;
+      document.getElementById('labelRateVal').innerText = `${rate} BPM`;
+      document.getElementById('labelRecoilVal').innerText = recoil === 100 ? 'Penuh (100%)' : `${recoil}%`;
+
+      const diagDepth = document.getElementById('diagDepth');
+      const diagRate = document.getElementById('diagRate');
+      const diagRecoil = document.getElementById('diagRecoil');
+      const voiceMsg = document.getElementById('aiVoiceMessage');
+      const voiceBox = document.getElementById('aiVoicePromptBox');
+      const scoreBadge = document.getElementById('aiScoreBadge');
+
+      let score = 100;
+      let depthStatus = 'Optimum';
+      let rateStatus = 'Tepat';
+      let recoilStatus = 'Sempurna';
+      let guidance = [];
+
+      // Depth Logic (Target: 5.0 - 6.0 cm)
+      if (depth < 5.0) {
+        score -= 25;
+        depthStatus = 'Terlalu Cetek';
+        diagDepth.className = 'font-bold text-amber-400';
+        guidance.push('Tekan lebih dalam (minimum 5 cm).');
+      } else if (depth > 6.0) {
+        score -= 15;
+        depthStatus = 'Terlalu Dalam';
+        diagDepth.className = 'font-bold text-rose-400';
+        guidance.push('Kurangkan daya sedikit, elakkan kecederaan tulang rusuk.');
+      } else {
+        diagDepth.className = 'font-bold text-emerald-400';
+      }
+      diagDepth.innerText = depthStatus;
+
+      // Rate Logic (Target: 100 - 120 bpm)
+      if (rate < 100) {
+        score -= 25;
+        rateStatus = 'Perlahan';
+        diagRate.className = 'font-bold text-amber-400';
+        guidance.push('Tingkatkan kelajuan tekanan mengikut metronom.');
+      } else if (rate > 120) {
+        score -= 20;
+        rateStatus = 'Terlalu Laju';
+        diagRate.className = 'font-bold text-rose-400';
+        guidance.push('Perlahankan sedikit rentak agar ventrikel sempat dipenuhi darah.');
+      } else {
+        diagRate.className = 'font-bold text-emerald-400';
+      }
+      diagRate.innerText = rateStatus;
+
+      // Recoil Logic
+      if (recoil < 90) {
+        score -= 30;
+        recoilStatus = 'Tidak Lengkap';
+        diagRecoil.className = 'font-bold text-rose-400';
+        guidance.push('Lepaskan berat tangan sepenuhnya agar dada lenting semula.');
+      } else {
+        diagRecoil.className = 'font-bold text-emerald-400';
+      }
+      diagRecoil.innerText = recoilStatus;
+
+      score = Math.max(0, score);
+      scoreBadge.innerText = `SKOR: ${score}%`;
+
+      if (guidance.length === 0) {
+        voiceMsg.innerText = '"Kualiti tekanan dada cemerlang! Kekalkan irama dan kedalaman ini."';
+        voiceBox.className = 'p-4 rounded-xl bg-slate-800/90 border border-emerald-500/40 text-sm font-semibold text-emerald-300 flex items-start gap-3';
+        scoreBadge.className = 'text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30';
+      } else {
+        voiceMsg.innerText = `"${guidance.join(' ')}"`;
+        voiceBox.className = 'p-4 rounded-xl bg-slate-800/90 border border-amber-500/40 text-sm font-semibold text-amber-300 flex items-start gap-3';
+        scoreBadge.className = 'text-xs font-mono font-bold bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30';
+      }
+    }
+
+    // Modul Pentaksiran: Quiz Questions Data
+    const quizQuestions = [
+      {
+        question: "Apakah perubahan fisiologi yang berlaku semasa fasa MENARIK NAFAS (Inhalasi)?",
+        options: [
+          "Otot interkostal luar mengendur dan diafragma melengkung ke atas",
+          "Isi padu rongga toraks berkurangan dan tekanan udara bertambah",
+          "Diafragma mengecut dan mendatar manakala sangkar rusuk bergerak ke atas dan keluar",
+          "Otot interkostal dalam mengecut dan menarik sangkar rusuk ke bawah"
+        ],
+        correct: 2,
+        explanation: "Semasa menarik nafas, otot interkostal luar mengecut (sangkar rusuk naik & keluar), dan diafragma mengecut menjadi mendatar. Ini menambah isi padu rongga toraks serta menurunkan tekanan udara di dalamnya."
+      },
+      {
+        question: "Mengikut garis panduan antarabangsa terkini, apakah nisbah mampatan dada kepada hembusan nafas bagi seorang mangsa dewasa?",
+        options: [
+          "15 tekanan : 2 hembusan",
+          "30 tekanan : 2 hembusan",
+          "30 tekanan : 5 hembusan",
+          "50 tekanan : tiada hembusan"
+        ],
+        correct: 1,
+        explanation: "Nisbah standard CPR untuk seorang mangsa dewasa ialah 30 tekanan dada diikuti oleh 2 hembusan nafas bantuan (30:2), dengan kadar kelajuan 100-120 mampatan seminit."
+      },
+      {
+        question: "Apakah tindakan utama yang TIDAK BOLEH dilakukan apabila merawat mangsa patah terbuka?",
+        options: [
+          "Menutup luka berdarah dengan kain kasa steril",
+          "Cuba menolak atau memasukkan kembali serpihan tulang yang terkeluar ke dalam isi",
+          "Memasang anduhan untuk mengimobilisasikan anggota yang cedera",
+          "Memeriksa nadi distal dan suhu anggota mangsa"
+        ],
+        correct: 1,
+        explanation: "Jangan sesekali menolak tulang yang tersembul masuk kembali kerana tindakan ini boleh memotong urat saraf, merosakkan salur darah besar, dan membawa kuman ke dalam tisu yang lebih dalam."
+      },
+      {
+        question: "Apakah kegunaan utama 'Anduhan Besar' (Arm Sling) menggunakan kain anduhan segi tiga?",
+        options: [
+          "Menampung patah tulang selangka dan pendarahan kepala",
+          "Menggantung kaki mangsa patah paha semasa pemindahan",
+          "Menyokong kecederaan anggota atas seperti tulang lengan bawah, pergelangan tangan, atau rusuk",
+          "Menghentikan pendarahan arteri di bahagian leher"
+        ],
+        correct: 2,
+        explanation: "Anduhan besar menampung dan merehatkan anggota atas (lengan bawah, pergelangan tangan) dengan membendung siku pada kedudukan 90 darjah merentasi toraks."
+      },
+      {
+        question: "Bagaimanakah aplikasi Kecerdasan Buatan (AI) membantu mengoptimumkan pemulihan pernafasan melalui telefon pintar?",
+        options: [
+          "Memberikan kejutan elektrik secara langsung melalui skrin telefon",
+          "Menggunakan model Computer Vision bagi mengesan sudut sendi, kedalaman mampatan, dan rentak CPR dalam masa nyata",
+          "Menggantikan keperluan membuat panggilan ambulans kecemasan 999",
+          "Menyuntik ubat bius melalui pembesar suara peranti"
+        ],
+        correct: 1,
+        explanation: "Teknologi Computer Vision berasaskan AI berupaya menjejak pergerakan tangan dan sendi penyelamat untuk memberikan maklum balas masa nyata mengenai kedalaman dan kelajuan mampatan tanpa memerlukan perkakasan tambahan."
+      }
+    ];
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[state.quizIndex];
+      state.quizAnswered = false;
+
+      document.getElementById('currentQuestionNum').innerText = state.quizIndex + 1;
+      document.getElementById('totalQuestionsNum').innerText = quizQuestions.length;
+      document.getElementById('quizScoreTracker').innerText = `Skor: ${state.quizScore}`;
+      document.getElementById('questionText').innerText = q.question;
+      
+      const explBox = document.getElementById('quizExplanationBox');
+      explBox.classList.add('hidden');
+      explBox.innerHTML = '';
+
+      const nextBtn = document.getElementById('btnNextQuestion');
+      nextBtn.classList.add('hidden');
+
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = q.options.map((opt, i) => `
+        <button onclick="handleQuizAnswer(${i})" class="quiz-opt-btn w-full p-4 rounded-xl border border-slate-200 text-left text-xs sm:text-sm font-medium text-slate-800 hover:bg-slate-50 hover:border-slate-300 transition flex items-center justify-between group">
+          <span>${opt}</span>
+          <span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs group-hover:border-slate-400 flex-shrink-0 ml-3">
+            ${String.fromCharCode(65 + i)}
+          </span>
+        </button>
+      `).join('');
+    }
+
+    function handleQuizAnswer(selectedIndex) {
+      if (state.quizAnswered) return;
+      state.quizAnswered = true;
+
+      const q = quizQuestions[state.quizIndex];
+      const optButtons = document.querySelectorAll('.quiz-opt-btn');
+
+      optButtons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correct) {
+          btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        } else if (idx === selectedIndex) {
+          btn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+        }
+      });
+
+      if (selectedIndex === q.correct) {
+        state.quizScore++;
+        document.getElementById('quizScoreTracker').innerText = `Skor: ${state.quizScore}`;
+        showToast('Tepat sekali! Jawapan anda betul.', 'success');
+      } else {
+        showToast('Kurang tepat. Semak penjelasan di bawah.', 'warning');
+      }
+
+      const explBox = document.getElementById('quizExplanationBox');
+      explBox.innerHTML = `<strong>Ulasan Pedagogi:</strong> ${q.explanation}`;
+      explBox.classList.remove('hidden');
+
+      const nextBtn = document.getElementById('btnNextQuestion');
+      nextBtn.classList.remove('hidden');
+      if (state.quizIndex === quizQuestions.length - 1) {
+        nextBtn.innerText = 'Lihat Keputusan Akhir';
+      } else {
+        nextBtn.innerText = 'Soalan Seterusnya';
+      }
+    }
+
+    function goToNextQuestion() {
+      if (state.quizIndex < quizQuestions.length - 1) {
+        state.quizIndex++;
+        renderQuizQuestion();
+      } else {
+        // Complete Quiz
+        document.getElementById('quizQuestionBox').classList.add('hidden');
+        document.getElementById('quizExplanationBox').classList.add('hidden');
+        document.getElementById('btnNextQuestion').classList.add('hidden');
+        
+        const summary = document.getElementById('quizFinalScoreSummary');
+        const pct = Math.round((state.quizScore / quizQuestions.length) * 100);
+        summary.innerText = `Skor anda: ${state.quizScore} daripada ${quizQuestions.length} soalan (${pct}%).`;
+        
+        document.getElementById('quizResultsScreen').classList.remove('hidden');
+        state.completedModules['tab-quiz'] = true;
+        updateOverallProgress();
+        showToast('Tahniah! Anda telah melengkapkan modul pentaksiran.', 'success');
+      }
+    }
+
+    function restartQuiz() {
+      state.quizIndex = 0;
+      state.quizScore = 0;
+      document.getElementById('quizQuestionBox').classList.remove('hidden');
+      document.getElementById('quizResultsScreen').classList.add('hidden');
+      renderQuizQuestion();
+    }
+
+    // Window on load initialization
+    window.onload = function() {
+      lucide.createIcons();
+      renderTechniques();
+      updateAiEvaluation();
+      renderQuizQuestion();
+      updateOverallProgress();
+    };
+  </script>
+</body>
+</html>

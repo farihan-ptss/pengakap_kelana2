@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hab Pembelajaran: Bantu Mula Gigitan, Sengatan & Keracunan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            danger: {
+              50: '#fef2f2',
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header & Navigation -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-lg shadow-brand-500/30 text-lg">
+            <i class="fa-solid fa-kit-medical"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight leading-tight">Topik 3</h1>
+            <p class="text-xs text-slate-500 font-medium">Bantu Mula: Gigitan, Sengatan & Keracunan</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Tabs -->
+        <nav class="hidden md:flex space-x-1 lg:space-x-2">
+          <button onclick="switchTab('modul30')" id="tab-btn-modul30" class="nav-tab px-3 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-brand-600 hover:bg-slate-100 active-tab">
+            <i class="fa-solid fa-spider mr-1.5 text-amber-500"></i> 3.0 Gigitan & Sengatan
+          </button>
+          <button onclick="switchTab('modul31')" id="tab-btn-modul31" class="nav-tab px-3 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-brand-600 hover:bg-slate-100">
+            <i class="fa-solid fa-skull-crossbones mr-1.5 text-red-500"></i> 3.1 Keracunan
+          </button>
+          <button onclick="switchTab('mitos')" id="tab-btn-mitos" class="nav-tab px-3 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-brand-600 hover:bg-slate-100">
+            <i class="fa-solid fa-scale-balanced mr-1.5 text-indigo-500"></i> Mitos vs Fakta
+          </button>
+          <button onclick="switchTab('simulasi')" id="tab-btn-simulasi" class="nav-tab px-3 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-brand-600 hover:bg-slate-100">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5 text-orange-500"></i> Simulasi Kecemasan
+          </button>
+          <button onclick="switchTab('kuiz')" id="tab-btn-kuiz" class="nav-tab px-3 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-brand-600 hover:bg-slate-100">
+            <i class="fa-solid fa-circle-question mr-1.5 text-teal-600"></i> Kuiz Ujian
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Scrollable Navigation Bar -->
+    <div class="md:hidden flex overflow-x-auto py-2 px-4 gap-2 border-t border-slate-100 custom-scroll bg-slate-50">
+      <button onclick="switchTab('modul30')" id="mob-btn-modul30" class="mob-tab whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">
+        3.0 Gigitan & Sengatan
+      </button>
+      <button onclick="switchTab('modul31')" id="mob-btn-modul31" class="mob-tab whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">
+        3.1 Keracunan
+      </button>
+      <button onclick="switchTab('mitos')" id="mob-btn-mitos" class="mob-tab whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">
+        Mitos vs Fakta
+      </button>
+      <button onclick="switchTab('simulasi')" id="mob-btn-simulasi" class="mob-tab whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">
+        Simulasi
+      </button>
+      <button onclick="switchTab('kuiz')" id="mob-btn-kuiz" class="mob-tab whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">
+        Ujian / Kuiz
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: MODUL 3.0 GIGITAN & SENGATAN -->
+    <!-- ========================================== -->
+    <section id="content-modul30" class="tab-content block space-y-8">
+      <!-- Section Intro Banner -->
+      <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-15 text-9xl">
+          <i class="fa-solid fa-shield-virus"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+            <i class="fa-solid fa-bookmark text-amber-200"></i> Modul 3.0 Rawatan Kecemasan
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Rawatan Gigitan Serangga, Binatang Kecil & Binatang Berbisa</h2>
+          <p class="mt-2 text-amber-50 text-sm sm:text-base leading-relaxed">
+            Mengetahui tindakan tepat dalam beberapa minit pertama boleh menyelamatkan nyawa serta mengurangkan kerosakan tisu kekal akibat bisa atau anafilaksis.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Category Filter -->
+      <div class="flex flex-wrap gap-2">
+        <button onclick="filterAnimal('all')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-white transition shadow-sm active-animal-btn">Semua Haiwan</button>
+        <button onclick="filterAnimal('ular')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition shadow-sm">Ular Berbisa</button>
+        <button onclick="filterAnimal('serangga')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition shadow-sm">Lebah & Tebuan</button>
+        <button onclick="filterAnimal('marin')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition shadow-sm">Ubur-Ubur (Obor-Obor)</button>
+        <button onclick="filterAnimal('binatang_kecil')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition shadow-sm">Lipan & Kala Jengking</button>
+        <button onclick="filterAnimal('haiwan_lain')" class="animal-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition shadow-sm">Kucing & Anjing (Rabies)</button>
+      </div>
+
+      <!-- Animal Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="animalCardsContainer">
+
+        <!-- Card 1: Ular Berbisa -->
+        <div class="animal-card ular bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-amber-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-amber-50/50">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-staff-snake"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Ular Berbisa</h3>
+                <p class="text-xs text-amber-700 font-medium">Neurotoksik / Hemotoksik</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-red-100 text-red-700 font-bold">Kritikal</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-amber-500"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Kesan 2 lubang taring, bengkak laju, sakit berdenyut, kelopak mata kuyu (neurotoksik), pendarahan gusi (hemotoksik).</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li>Tenangkan mangsa & pastikan rehat sepenuhnya (elak bisa merebak laju).</li>
+                <li><strong>Hadkan pergerakan:</strong> Pasang anduh/splint pada anggota terjejas pada paras bawah jantung.</li>
+                <li>Tanggalkan cincin/gelang sebelum bengkak merebak.</li>
+                <li>Bawa ke hospital segera bersama gambar/ciri ular (JANGAN tangkap ular!).</li>
+              </ul>
+            </div>
+            <div class="bg-red-50 p-3 rounded-xl border border-red-100 text-red-700">
+              <strong class="block font-semibold">JANGAN SEKALI-KALI:</strong>
+              Ikat tourniquet ketat mati darah, toreh kulit guna pisau, atau sedut bisa guna mulut.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Lebah & Tebuan -->
+        <div class="animal-card serangga bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-amber-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-yellow-50/50">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-yellow-500 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-bug"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Lebah & Tebuan</h3>
+                <p class="text-xs text-yellow-700 font-medium">Sengatan Berpundi Bisa</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-amber-100 text-amber-800 font-bold">Risiko Anafilaksis</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-yellow-500"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Sakit mencucuk serta-merta, merah, bengkak setempat. AWAS: Bengkak bibir/leher dan sesak nafas (tanda renjatan alahan).</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Kikis pundi sengat</strong> dengan kad keras (cth: kad pengenalan/kad ATM). JANGAN picit menggunakan penyepit.</li>
+                <li>Basuh kawasan sengatan dengan air dan sabun.</li>
+                <li>Letakkan kompres ais/sejuk berbalut tuala (10-15 minit) untuk redakan sakit & bengkak.</li>
+                <li>Jika sesak nafas, gunakan suntikan EpiPen (jika ada) dan hubungi 999 segera!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Ubur-Ubur (Marin) -->
+        <div class="animal-card marin bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-blue-50/50">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-water"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Ubur-Ubur (Obor-Obor)</h3>
+                <p class="text-xs text-blue-700 font-medium">Nematocyst (Sel Penyengat)</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-blue-100 text-blue-800 font-bold">Kecemasan Pantai</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-blue-500"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Jalur merah seperti lecuran tali cemeti, rasa terbakar membara, renjatan kardiovaskular jika obor-obor kotak (Box Jellyfish).</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li>Bawa mangsa keluar dari air segera.</li>
+                <li><strong>Siram dengan Cuka Makan (Asid Asetik 4-6%)</strong> selama sekurang-kurangnya 30 saat untuk nyahaktifkan sel sengat.</li>
+                <li>Jika tiada cuka, bilas hanya dengan <em>air laut</em>.</li>
+                <li>Keluarkan sisa tentakel dengan tuala berlapik atau sarung tangan.</li>
+              </ul>
+            </div>
+            <div class="bg-red-50 p-3 rounded-xl border border-red-100 text-red-700">
+              <strong class="block font-semibold">ELAKKAN:</strong>
+              Jangan guna air tawar, air kencing, atau gosok kawasan sengatan dengan pasir (menyebabkan sel menyuntik lebih banyak bisa).
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Lipan & Kala Jengking -->
+        <div class="animal-card binatang_kecil bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-purple-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-purple-50/50">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-shield-halved"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Lipan & Kala Jengking</h3>
+                <p class="text-xs text-purple-700 font-medium">Bisa Tempatan Berkepekatan Tinggi</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-purple-100 text-purple-800 font-bold">Sakit Teruk</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-purple-500"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Rasa sakit yang amat sangat pada tempat gigitan, bengkak, kemerahan, kebas, dan kadangkala demam ringan.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li>Cuci luka gigitan menggunakan air mengalir dan sabun antiseptik.</li>
+                <li>Letakkan pek ais untuk kebas/kebas kawasan yang sakit dan kurangkan radang.</li>
+                <li>Ubat penahan sakit (cth: Paracetamol) boleh diambil jika tiada kontraindikasi.</li>
+                <li>Dapatkan rawatan klinik jika bengkak semakin membesar atau timbul nanah.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Lintah & Pacat -->
+        <div class="animal-card binatang_kecil bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-slate-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-slate-700 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-worm"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Pacat & Lintah</h3>
+                <p class="text-xs text-slate-600 font-medium">Hirudin (Anti-pembekuan Darah)</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-slate-200 text-slate-700 font-bold">Ringan</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-slate-600"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Darah sukar berhenti mengalir kerana enzim hirudin, rasa gatal, tiada bisa berbahaya.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li>Tanggalkan secara lembut dengan kuku atau semburan air tembakau/garam (jangan sentap kuat agar gigi tidak tertinggal).</li>
+                <li>Tekan kawasan luka dengan kain kasa bersih beberapa minit sehingga darah beku.</li>
+                <li>Sapu antiseptik dan balut bersih.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Gigitan Mamalia (Anjing/Kucing) -->
+        <div class="animal-card haiwan_lain bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col hover:border-rose-300 hover:shadow-md transition">
+          <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-rose-50/50">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-lg">
+                <i class="fa-solid fa-dog"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">Gigitan Kucing & Anjing</h3>
+                <p class="text-xs text-rose-700 font-medium">Risiko Rabies & Tetanus</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs rounded-full bg-rose-100 text-rose-800 font-bold">Jangkitan Tinggi</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs sm:text-sm">
+            <div>
+              <p class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation text-rose-500"></i> Simptom Utama:
+              </p>
+              <p class="text-slate-600">Luka koyak dalam atau luka tusukan taring kucing, jangkitan bakteria <em>Pasteurella</em>, risiko virus Rabies (anjing gila).</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <p class="font-bold text-brand-700 text-xs uppercase tracking-wide mb-1">Langkah Rawatan Utama:</p>
+              <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Basuh segera di bawah air mengalir dan sabun selama 15 MINIT berturut-turut!</strong></li>
+                <li>Sapu povidone iodine atau cecair antiseptik.</li>
+                <li>Wajib ke klinik kesihatan untuk suntikan antitetanus (kancing gigi) dan vaksinasi Rabies.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Algoritma Rawatan Gigitan Ular (Pressure Immobilization Bandage) -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-lg font-bold">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">Prosedur Standard Pertubuhan Kesihatan Sedunia (WHO) & KKM untuk Gigitan Ular</h3>
+            <p class="text-xs text-slate-500">Kaedah Imobilisasi & Tekanan (Pressure Immobilization Bandage - PIB)</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-sm mb-3">1</span>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Tenang & Kaku</h4>
+            <p class="text-xs text-slate-600">Setiap degupan jantung dan pengecutan otot mempercepatkan peredaran racun ke saluran limfa.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-sm mb-3">2</span>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Balutan Elastik</h4>
+            <p class="text-xs text-slate-600">Gunakan pembalut elastik dari hujung jari kaki/tangan ke atas melangkaui sendi dengan tekanan sederhana (bukan tourniquet).</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-sm mb-3">3</span>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Pasang Anduh / Splint</h4>
+            <p class="text-xs text-slate-600">Letakkan kayu atau papan sokongan agar sendi tidak boleh digerakkan atau dibengkokkan.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-sm mb-3">4</span>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Evakuasi Segera</h4>
+            <p class="text-xs text-slate-600">Usung mangsa (jangan biarkan berjalan) terus ke Jabatan Kecemasan hospital terdekat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MODUL 3.1 KERACUNAN -->
+    <!-- ========================================== -->
+    <section id="content-modul31" class="tab-content hidden space-y-8">
+      <!-- Section Intro Banner -->
+      <div class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-15 text-9xl">
+          <i class="fa-solid fa-skull"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+            <i class="fa-solid fa-flask-vial text-rose-200"></i> Modul 3.1 Rawatan Toksikologi Asas
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Punca dan Rawatan Keracunan (Poisoning)</h2>
+          <p class="mt-2 text-rose-50 text-sm sm:text-base leading-relaxed">
+            Racun adalah apa-apa bahan pejal, cecair atau gas yang mendatangkan mudarat, kerosakan sel atau kematian apabila memasuki tubuh manusia melalui pelbagai laluan.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 Laluan Racun Masuk ke Tubuh -->
+      <div>
+        <div class="mb-4">
+          <h3 class="text-xl font-bold text-slate-900">4 Laluan Utama Racun Memasuki Tubuh</h3>
+          <p class="text-sm text-slate-500">Mengenalpasti laluan kemasukan racun memandu cara bantuan awal yang tepat.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Ingestion -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-red-300 transition">
+            <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">1. Tertelan (Ingestion)</h4>
+            <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded">Paling Kerap</span>
+            <p class="text-xs text-slate-600 mt-2">Ubat dos berlebihan, peluntur pakaian, cecair pencuci lantai, racun serangga/rumpai, cendawan liar, makanan basi.</p>
+          </div>
+
+          <!-- Inhalation -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-sky-300 transition">
+            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-lungs"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">2. Terhidu (Inhalation)</h4>
+            <span class="text-xs font-semibold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Tindakan Pantas</span>
+            <p class="text-xs text-slate-600 mt-2">Gas karbon monoksida (CO) daripada ekzos kenderaan, gas memasak (LPG), klorin kolam, wap ammonia, asap kebakaran.</p>
+          </div>
+
+          <!-- Absorption -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-amber-300 transition">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-hand-dots"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">3. Penyerapan Kulit / Mata</h4>
+            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Tembus Kulit</span>
+            <p class="text-xs text-slate-600 mt-2">Semburan racun perosak (organofosfat), bahan kimia industri, asid bateri tertumpah ke atas kulit atau terpercik ke mata.</p>
+          </div>
+
+          <!-- Injection -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-purple-300 transition">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-syringe"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">4. Suntikan (Injection)</h4>
+            <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Aliran Darah</span>
+            <p class="text-xs text-slate-600 mt-2">Penyalahgunaan dadah terlarang, cucukan jarum tercemar, atau bisa haiwan yang memasuki salur darah.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Critical Rule: Kakisan vs Bukan Kakisan -->
+      <div class="bg-white rounded-2xl border-2 border-red-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center text-xl">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </span>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">Peraturan Emas Keracunan Tertelan: Memuntahkan atau Tidak?</h3>
+            <p class="text-xs text-slate-500">Kesilapan memuntahkan mangsa boleh mengakibatkan luka bakar esofagus berganda atau kematian!</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <!-- Kakisan (Corrosive) -->
+          <div class="bg-red-50 border border-red-200 rounded-2xl p-5">
+            <div class="flex items-center gap-2 text-red-700 font-extrabold text-base mb-2">
+              <i class="fa-solid fa-circle-xmark text-lg"></i>
+              Bahan KAKISAN & PETROLEUM (JANGAN PAKSA MUNTAH!)
+            </div>
+            <p class="text-xs text-red-900 mb-3">
+              Contoh: Asid hidroklorik, peluntur klorin, natrium hidroksida (soda pembakar longkang), cuka getah, minyak tanah, petrol, pencair cat.
+            </p>
+            <div class="bg-white p-3 rounded-xl border border-red-200 text-xs text-slate-700 space-y-2">
+              <p><strong>Kenapa bahaya muntah?</strong> Cecair asid/alkali yang dimuntahkan akan membakar esofagus dan tekak buat kali kedua, dan minyak boleh tersedak masuk ke paru-paru (<em>aspiration pneumonia</em>).</p>
+              <p><strong>Tindakan:</strong> Jangan paksa muntah! Jika mangsa sedar dan boleh menelan, berikan sedikit air kosong untuk mencairkan (jangan berlebihan). Bawa bekas racun ke hospital segera.</p>
+            </div>
+          </div>
+
+          <!-- Bukan Kakisan (Non-Corrosive) -->
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
+            <div class="flex items-center gap-2 text-emerald-800 font-extrabold text-base mb-2">
+              <i class="fa-solid fa-circle-check text-lg"></i>
+              Bahan BUKAN KAKISAN (Tindakan Terkawal)
+            </div>
+            <p class="text-xs text-emerald-900 mb-3">
+              Contoh: Makanan basi, ubat tablet dos berlebihan (panadol/vitamin), racun herbisid tertentu yang bukan pelarut hidrokarbon.
+            </p>
+            <div class="bg-white p-3 rounded-xl border border-emerald-200 text-xs text-slate-700 space-y-2">
+              <p><strong>Tindakan Bantu Mula:</strong> Jangan paksa muntah secara membuta tuli kecuali diarahkan oleh pegawai perubatan atau pakar Pusat Racun Negara.</p>
+              <p><strong>Di Hospital:</strong> Rawatan seperti kumbahan perut (<em>gastric lavage</em>) atau arang aktif (<em>activated charcoal</em>) akan diberikan dalam tempoh 1-2 jam pertama oleh staf bertauliah.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panduan Mengikut Laluan Keracunan -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-900 mb-4">Langkah Bantu Mula Berdasarkan Senario Keracunan</h3>
+        
+        <div class="space-y-4">
+          <!-- Accordion 1: Terhidu Gas -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <button onclick="toggleAccordion('acc-gas')" class="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-cloud-meatball text-sky-500"></i> Jika Mangsa Terhidu Gas Beracun (Asap / CO / Ammonia)
+              </span>
+              <i class="fa-solid fa-chevron-down text-slate-400 transition transform" id="icon-acc-gas"></i>
+            </button>
+            <div id="acc-gas" class="p-4 text-xs sm:text-sm text-slate-600 bg-white border-t border-slate-100 hidden space-y-2">
+              <p><strong>1. Keselamatan diri penyelamat:</strong> Jangan terburu-buru masuk ke ruang tertutup tanpa alat pernafasan. Buka pintu dan tingkap dari luar jika selamat.</p>
+              <p><strong>2. Alihkan mangsa:</strong> Bawa mangsa ke kawasan lapang dengan pengudaraan segar serta-merta.</p>
+              <p><strong>3. Longgarkan pakaian:</strong> Buka butang baju atau tali leher di leher dan dada untuk melancarkan pernafasan.</p>
+              <p><strong>4. Pantau DRSABC:</strong> Jika mangsa tidak bernafas, mulakan Resusitasi Kardiopulmonari (CPR) jika selamat (gunakan topeng perisai muka untuk elak terhidu sisa gas).</p>
+            </div>
+          </div>
+
+          <!-- Accordion 2: Terkena Kulit / Mata -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <button onclick="toggleAccordion('acc-kulit')" class="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-eye-dropper text-amber-500"></i> Jika Terkena Bahan Kimia pada Kulit atau Percikan Mata
+              </span>
+              <i class="fa-solid fa-chevron-down text-slate-400 transition transform" id="icon-acc-kulit"></i>
+            </button>
+            <div id="acc-kulit" class="p-4 text-xs sm:text-sm text-slate-600 bg-white border-t border-slate-100 hidden space-y-2">
+              <p><strong>1. Bilas dengan segera:</strong> Alirkan air bersih paip berterusan pada kulit atau mata selama <strong>15 hingga 20 minit</strong> tanpa henti.</p>
+              <p><strong>2. Tanggalkan pakaian:</strong> Semasa membilas, tanggalkan pakaian, jam tangan, atau kasut yang terkena tumpahan racun dengan cermat.</p>
+              <p><strong>3. Untuk mata:</strong> Buka kelopak mata perlahan-lahan agar air dapat membilas seluruh permukaan bebola mata dari sudut dalam ke arah luar (elak mengalir ke mata sebelah).</p>
+              <p><strong>4. Jangan guna ubat sapu minyak:</strong> Jangan letak mentega, ubat gigi atau salap tanpa nasihat doktor.</p>
+            </div>
+          </div>
+
+          <!-- Accordion 3: Mangsa Tidak Sedarkan Diri -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <button onclick="toggleAccordion('acc-pengsan')" class="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-bed-pulse text-red-500"></i> Jika Mangsa Keracunan Pengsan / Tidak Sedarkan Diri
+              </span>
+              <i class="fa-solid fa-chevron-down text-slate-400 transition transform" id="icon-acc-pengsan"></i>
+            </button>
+            <div id="acc-pengsan" class="p-4 text-xs sm:text-sm text-slate-600 bg-white border-t border-slate-100 hidden space-y-2">
+              <p><strong>1. Periksa nadi dan pernafasan:</strong> Pastikan saluran pernafasan terbuka (Head-tilt Chin-lift).</p>
+              <p><strong>2. Kedudukan Pemulihan (Recovery Position):</strong> Jika bernafas, baringkan mangsa secara mengiring (posisi pemulihan) untuk mengelakkan mangsa lemas tersedak sekiranya termuntah spontan.</p>
+              <p><strong>3. Jangan beri sebarang minuman/makanan:</strong> Memberi air kepada orang tidak sedar akan menyumbat paru-paru!</p>
+              <p><strong>4. Simpan bukti:</strong> Kumpul botol ubat, pembungkus racun, atau sampel muntah di dalam bekas bertutup untuk analisis makmal hospital.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: MITOS VS FAKTA -->
+    <!-- ========================================== -->
+    <section id="content-mitos" class="tab-content hidden space-y-8">
+      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+            <i class="fa-solid fa-lightbulb text-indigo-200"></i> Kesedaran Komuniti
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Mitos vs Fakta Bantu Mula</h2>
+          <p class="mt-2 text-indigo-100 text-sm sm:text-base leading-relaxed">
+            Banyak amalan tradisi yang popular sebenarnya membahayakan nyawa mangsa gigitan dan keracunan. Kenali fakta perubatan terkini.
+          </p>
+        </div>
+      </div>
+
+      <!-- Mitos Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Item 1 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <i class="fa-solid fa-circle-xmark text-lg"></i> MITOS TRADISI:
+            </div>
+            <blockquote class="text-base font-semibold text-slate-800 bg-red-50/70 p-3 rounded-xl border border-red-100">
+              "Toreh luka gigitan ular dengan pisau lipat dan hisap bisa keluar menggunakan mulut seperti dalam filem koboi."
+            </blockquote>
+            <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm pt-2">
+              <i class="fa-solid fa-circle-check text-lg"></i> FAKTA PERUBATAN:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Menoreh kulit hanya memotong salur darah dan saraf, mempercepat penyebaran kuman. Menghisap dengan mulut pula memindahkan bakteria mulut ke luka, serta boleh meracuni si penyelamat sekiranya ada luka mikro di bibir atau gusi.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <i class="fa-solid fa-circle-xmark text-lg"></i> MITOS TRADISI:
+            </div>
+            <blockquote class="text-base font-semibold text-slate-800 bg-red-50/70 p-3 rounded-xl border border-red-100">
+              "Kencing pada kesan sengatan obor-obor / ubur-ubur boleh meneutralkan racunnya."
+            </blockquote>
+            <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm pt-2">
+              <i class="fa-solid fa-circle-check text-lg"></i> FAKTA PERUBATAN:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Air kencing mengandungi paras keasidan dan garam yang tidak menentu. Tindak balas ini boleh memicu sel pundi sengat (nematosis) yang belum meletup untuk melepaskan lebih banyak racun ke dalam kulit. Gunakan <strong>cuka makan</strong> sahaja!
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <i class="fa-solid fa-circle-xmark text-lg"></i> MITOS TRADISI:
+            </div>
+            <blockquote class="text-base font-semibold text-slate-800 bg-red-50/70 p-3 rounded-xl border border-red-100">
+              "Jika anak tertelan racun atau sabun pencuci, beri minum air garam atau colok anak tekak supaya segera muntah."
+            </blockquote>
+            <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm pt-2">
+              <i class="fa-solid fa-circle-check text-lg"></i> FAKTA PERUBATAN:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Memaksa muntah bahan kimia menghakis (asid/alkali kuat) atau produk berasaskan petroleum mengakibatkan salur esofagus terbakar dua kali dan berisiko tinggi menyebabkan paru-paru rosak kekal akibat tersedak muntah buih.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <i class="fa-solid fa-circle-xmark text-lg"></i> MITOS TRADISI:
+            </div>
+            <blockquote class="text-base font-semibold text-slate-800 bg-red-50/70 p-3 rounded-xl border border-red-100">
+              "Ikat anggota dengan tali atau getah (tourniquet) seketat mungkin sehingga nadi mati untuk sekat bisa ular."
+            </blockquote>
+            <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm pt-2">
+              <i class="fa-solid fa-circle-check text-lg"></i> FAKTA PERUBATAN:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Ikatan tourniquet yang terlalu ketat menghalang aliran darah arteri. Ini menyebabkan sel otot dan tisu anggota mati (gangren) sehingga kaki atau tangan terpaksa dipotong (amputasi), sedangkan bisa ular sebenarnya merebak melalui sistem limfatik.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: SIMULASI KECEMASAN INTERAKTIF -->
+    <!-- ========================================== -->
+    <section id="content-simulasi" class="tab-content hidden space-y-8">
+      <div class="bg-gradient-to-r from-orange-500 to-amber-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+            <i class="fa-solid fa-gamepad text-orange-200"></i> Simulator Interaktif
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Simulasi Respon Kecemasan</h2>
+          <p class="mt-2 text-orange-100 text-sm sm:text-base leading-relaxed">
+            Uji ketangkasan anda membuat keputusan kritikal dalam senario kecemasan sebenar di lapangan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Simulator Interactive Box -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-md p-6 sm:p-10 max-w-3xl mx-auto">
+        <div id="sim-scenario-box">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+            <span class="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full" id="sim-step-badge">Senario 1 daripada 3</span>
+            <span class="text-xs text-slate-400 font-medium">Bantu Mula Bertindak</span>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2" id="sim-title">Rakan Anda Dipatuk Ular Semasa Berkhemah</h3>
+            <p class="text-sm text-slate-600 leading-relaxed" id="sim-description">
+              Rakan anda terpijak seekor ular ketika mencari kayu api. Terdapat dua kesan tusukan taring di buku lalinya dan dia mula panik serta menjerit mahu berlari mencari bantuan. Apakah tindakan pertama anda?
+            </p>
+          </div>
+
+          <!-- Options -->
+          <div class="space-y-3" id="sim-options">
+            <button onclick="checkSimChoice(0)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/40 text-sm font-medium transition flex items-center justify-between group">
+              <span>A. Ikat tali getah ketat-ketat pada pehanya dan suruh dia berlari ke khemah.</span>
+              <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500"></i>
+            </button>
+            <button onclick="checkSimChoice(1)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/40 text-sm font-medium transition flex items-center justify-between group">
+              <span>B. Suruh dia bertenang, duduk kaku, pasang anduh/splint pada kakinya dan usung bersama ke klinik.</span>
+              <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500"></i>
+            </button>
+            <button onclick="checkSimChoice(2)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/40 text-sm font-medium transition flex items-center justify-between group">
+              <span>C. Ambil pisau lipat dan buat torehan 'X' pada luka untuk picit darah berbisa keluar.</span>
+              <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500"></i>
+            </button>
+          </div>
+
+          <!-- Feedback Box -->
+          <div id="sim-feedback" class="mt-6 p-4 rounded-2xl hidden"></div>
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+          <button id="sim-next-btn" onclick="nextSimScenario()" class="hidden bg-slate-900 hover:bg-black text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2">
+            Senario Seterusnya <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: KUIZ UJIAN MINDA -->
+    <!-- ========================================== -->
+    <section id="content-kuiz" class="tab-content hidden space-y-8">
+      <div class="bg-gradient-to-r from-teal-600 to-emerald-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+            <i class="fa-solid fa-graduation-cap text-teal-200"></i> Penilaian Kendiri
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Kuiz Penilaian Pantas</h2>
+          <p class="mt-2 text-teal-100 text-sm sm:text-base leading-relaxed">
+            Uji kefahaman teori dan amalan standard bantu mula bagi Modul 3.0 & Modul 3.1.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-md p-6 sm:p-10 max-w-3xl mx-auto" id="quizContainer">
+        <!-- Dynamic Quiz UI in JS -->
+        <div id="quiz-intro">
+          <div class="text-center py-6">
+            <div class="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Ujian 5 Soalan Komprehensif</h3>
+            <p class="text-slate-500 text-sm max-w-md mx-auto mt-2">
+              Soalan merangkumi gigitan berbisa, renjatan lebah, keracunan asid kakisan dan talian kecemasan.
+            </p>
+            <button onclick="startQuiz()" class="mt-6 bg-brand-600 hover:bg-brand-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-brand-500/30 transition text-sm">
+              Mula Kuiz Sekarang
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-question-view" class="hidden">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-5">
+            <span class="text-xs font-bold text-slate-400" id="quiz-progress-text">Soalan 1 / 5</span>
+            <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-md" id="quiz-score-badge">Markah: 0</span>
+          </div>
+
+          <h4 class="text-base sm:text-lg font-bold text-slate-900 mb-4" id="quiz-question-title">Soalan teks di sini</h4>
+
+          <div class="space-y-3" id="quiz-options-container">
+            <!-- Options injected by JS -->
+          </div>
+
+          <div id="quiz-explanation" class="mt-5 p-4 rounded-xl text-xs sm:text-sm hidden"></div>
+
+          <div class="mt-6 flex justify-end">
+            <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl text-sm font-semibold transition">
+              Seterusnya
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-result-view" class="hidden text-center py-8">
+          <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" id="quiz-result-icon">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <h3 class="text-2xl font-extrabold text-slate-900" id="quiz-result-title">Tahniah!</h3>
+          <p class="text-sm text-slate-600 mt-2" id="quiz-result-desc">Anda menjawab dengan cemerlang.</p>
+          <div class="my-6">
+            <span class="text-4xl font-black text-brand-600" id="quiz-final-score">5 / 5</span>
+          </div>
+          <button onclick="startQuiz()" class="bg-slate-900 hover:bg-black text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition">
+            Ulang Semula Kuiz
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Emergency Quick Dial Modal -->
+  <div id="emergencyModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-extrabold text-lg text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-phone-volume text-red-600"></i> Talian Pantas Kecemasan
+        </h3>
+        <button onclick="closeModalEmergency()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500">Sila hubungi nombor berikut mengikut kesesuaian kes kecemasan di Malaysia:</p>
+
+      <div class="space-y-3">
+        <a href="tel:999" class="flex items-center justify-between p-3.5 rounded-xl bg-red-50 border border-red-200 hover:bg-red-100 transition group">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-bold text-lg">
+              999
+            </span>
+            <div>
+              <p class="font-bold text-sm text-slate-900">MERS 999 (Ambulans / Pertahanan Awam)</p>
+              <p class="text-xs text-slate-500">Kecemasan perubatan, patukan ular & ambulans</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-red-400 group-hover:translate-x-1 transition"></i>
+        </a>
+
+        <a href="tel:1800888099" class="flex items-center justify-between p-3.5 rounded-xl bg-amber-50 border border-amber-200 hover:bg-amber-100 transition group">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-skull"></i>
+            </span>
+            <div>
+              <p class="font-bold text-sm text-slate-900">Pusat Racun Negara (PRN)</p>
+              <p class="text-xs text-slate-500">Bebas Tol: 1-800-88-8099 / 04-657 0099</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-amber-400 group-hover:translate-x-1 transition"></i>
+        </a>
+
+        <a href="tel:994" class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition group">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold text-lg">
+              994
+            </span>
+            <div>
+              <p class="font-bold text-sm text-slate-900">Bomba dan Penyelamat</p>
+              <p class="text-xs text-slate-500">Khidmat menangkap haiwan berbisa / sarang tebuan</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:translate-x-1 transition"></i>
+        </a>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="closeModalEmergency()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-heart-pulse text-red-500"></i>
+        <span>Hab Pembelajaran Interaktif Pertolongan Cemas Kebangsaan &copy; 2026</span>
+      </div>
+      <p>Berasaskan Protokol Klinikal Kementerian Kesihatan Malaysia (KKM) & WHO</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript Logics -->
+  <script>
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+        tab.classList.remove('block');
+      });
+
+      const activeContent = document.getElementById('content-' + tabId);
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+        activeContent.classList.add('block');
+      }
+
+      // Update Desktop tabs
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-brand-50', 'text-brand-700', 'font-bold');
+        btn.classList.add('text-slate-600');
+      });
+      const currentTabBtn = document.getElementById('tab-btn-' + tabId);
+      if (currentTabBtn) {
+        currentTabBtn.classList.add('bg-brand-50', 'text-brand-700', 'font-bold');
+        currentTabBtn.classList.remove('text-slate-600');
+      }
+
+      // Update Mobile tabs
+      document.querySelectorAll('.mob-tab').forEach(btn => {
+        btn.classList.remove('bg-brand-600', 'text-white', 'border-transparent');
+        btn.classList.add('bg-white', 'text-slate-700');
+      });
+      const currentMobBtn = document.getElementById('mob-btn-' + tabId);
+      if (currentMobBtn) {
+        currentMobBtn.classList.add('bg-brand-600', 'text-white', 'border-transparent');
+        currentMobBtn.classList.remove('bg-white', 'text-slate-700');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Animal Filter in Module 3.0
+    function filterAnimal(category) {
+      const cards = document.querySelectorAll('.animal-card');
+      const buttons = document.querySelectorAll('.animal-filter-btn');
+
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700');
+      });
+
+      event.currentTarget.classList.add('bg-slate-900', 'text-white');
+      event.currentTarget.classList.remove('bg-white', 'text-slate-700');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Accordion Toggle
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById('icon-' + id);
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (icon) icon.classList.add('rotate-180');
+      } else {
+        el.classList.add('hidden');
+        if (icon) icon.classList.remove('rotate-180');
+      }
+    }
+
+    // Modal Control
+    function openModalEmergency() {
+      document.getElementById('emergencyModal').classList.remove('hidden');
+    }
+    function closeModalEmergency() {
+      document.getElementById('emergencyModal').classList.add('hidden');
+    }
+
+    // =====================================
+    // SIMULATOR LOGIC
+    // =====================================
+    const simScenarios = [
+      {
+        badge: "Senario 1 daripada 3",
+        title: "Patukan Ular di Hutan Lipur",
+        desc: "Rakan anda terpijak seekor ular ketika mencari kayu api. Terdapat dua kesan tusukan taring di buku lalinya dan dia mula panik serta menjerit mahu berlari mencari bantuan. Apakah tindakan pertama anda?",
+        options: [
+          { text: "A. Ikat tali getah ketat-ketat pada pehanya dan suruh dia berlari ke khemah.", correct: false, explanation: "SALAH! Mengikat tourniquet ketat boleh merosakkan tisu dan saraf sehingga amputasi. Berlari akan mengepam racun ke jantung dengan pantas." },
+          { text: "B. Tenangkan mangsa, elakkan pergerakan, pasang anduh/splint pada kakinya dan usung mangsa.", correct: true, explanation: "TEPAT SEKALI! Menenangkan mangsa dan menyokong anggota dengan splint (imobilisasi) memperlahankan pengaliran limfa yang membawa bisa." },
+          { text: "C. Ambil pisau lipat dan buat torehan 'X' pada luka untuk picit darah keluar.", correct: false, explanation: "SALAH & BAHAYA! Menoreh kulit mendatangkan risiko pendarahan teruk dan jangkitan bakteria tanpa mengurangkan bisa di dalam tisu." }
+        ]
+      },
+      {
+        badge: "Senario 2 daripada 3",
+        title: "Kanak-kanak Tertelan Cecair Peluntur Pakaian",
+        desc: "Seorang kanak-kanak 4 tahun terminum cecair peluntur pakaian (peluntur berasaskan klorin/alkali) yang diletakkan di dalam botol air mineral. Kanak-kanak tersebut sedang menangis memegang tekaknya.",
+        options: [
+          { text: "A. Beri dia minum air garam pekat dan colok tekak agar dia memuntahkan semua cecair itu keluar.", correct: false, explanation: "SALAH & AMAT BAHAYA! Peluntur adalah bahan kakisan (corrosive). Memaksa muntah akan membakar esofagus buat kali kedua dan berisiko bocor!" },
+          { text: "B. Beri minum air kosong sedikit jika sedar, jangan paksa muntah, dan bawa botol peluntur terus ke hospital.", correct: true, explanation: "TEPAT! Jangan paksa muntah bagi bahan kakisan. Bawa sampel botol cecair bagi membolehkan doktor menentukan kepekatan bahan aktifnya." },
+          { text: "C. Berikan minyak masak untuk meneutralkan asid di dalam perutnya.", correct: false, explanation: "SALAH! Jangan berikan minyak masak atau bahan asing tanpa nasihat profesional perubatan." }
+        ]
+      },
+      {
+        badge: "Senario 3 daripada 3",
+        title: "Sengatan Obor-obor di Pantai Cherating",
+        desc: "Semasa berenang di laut, seorang perenang menjerit kesakitan kerana disengat tentakel obor-obor. Kakinya kelihatan berjalur merah terbakar dan masih ada sisa lendir tentakel melekat.",
+        options: [
+          { text: "A. Cuci serta-merta dengan air mineral tawar dan gosok kuat menggunakan pasir pantai.", correct: false, explanation: "SALAH! Air tawar dan geseran pasir akan mencetuskan nematosis yang belum meletup untuk menyuntik lebih banyak bisa ke dalam kulit!" },
+          { text: "B. Siram kawasan luka dengan cuka makan selama 30 saat, kemudian cabut sisa tentakel dengan tuala berlapik.", correct: true, explanation: "TEPAT! Asid asetik dalam cuka makan melumpuhkan sel sengat daripada terus merembeskan bisa." },
+          { text: "C. Minta rakan kencing ke atas luka tersebut untuk meneutralkan bisa.", correct: false, explanation: "SALAH! Kencing manusia bukanlah rawatan saintifik dan paras urea/keasidannya boleh merangsang pelepasan bisa bertambah teruk." }
+        ]
+      }
+    ];
+
+    let currentSimIndex = 0;
+
+    function renderSimScenario() {
+      const data = simScenarios[currentSimIndex];
+      document.getElementById('sim-step-badge').innerText = data.badge;
+      document.getElementById('sim-title').innerText = data.title;
+      document.getElementById('sim-description').innerText = data.desc;
+
+      const optsContainer = document.getElementById('sim-options');
+      optsContainer.innerHTML = '';
+
+      data.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => checkSimChoice(idx);
+        btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/40 text-sm font-medium transition flex items-center justify-between group";
+        btn.innerHTML = `<span>${opt.text}</span><i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500"></i>`;
+        optsContainer.appendChild(btn);
+      });
+
+      const fb = document.getElementById('sim-feedback');
+      fb.classList.add('hidden');
+      fb.innerHTML = '';
+      document.getElementById('sim-next-btn').classList.add('hidden');
+    }
+
+    function checkSimChoice(optionIndex) {
+      const data = simScenarios[currentSimIndex];
+      const selected = data.options[optionIndex];
+      const fb = document.getElementById('sim-feedback');
+      const nextBtn = document.getElementById('sim-next-btn');
+
+      fb.classList.remove('hidden');
+
+      if (selected.correct) {
+        fb.className = "mt-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm";
+        fb.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> JAWAPAN TEPAT:</strong> ${selected.explanation}`;
+      } else {
+        fb.className = "mt-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-sm";
+        fb.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> PERHATIAN:</strong> ${selected.explanation}`;
+      }
+
+      nextBtn.classList.remove('hidden');
+    }
+
+    function nextSimScenario() {
+      currentSimIndex++;
+      if (currentSimIndex >= simScenarios.length) {
+        currentSimIndex = 0; // loop back
+      }
+      renderSimScenario();
+    }
+
+    // =====================================
+    // QUIZ LOGIC
+    // =====================================
+    const quizQuestions = [
+      {
+        question: "Apakah tindakan awal yang betul apabila mangsa disengat lebah dan pundi sengat masih tertinggal pada kulit?",
+        options: [
+          "Picit pundi sengat menggunakan penyepit kuku",
+          "Kikis pundi sengat secara mendatar menggunakan kad keras",
+          "Toreh kulit dengan jarum panas untuk mencungkil pundi",
+          "Biarkan sehingga pundi gugur sendiri"
+        ],
+        answer: 1,
+        explanation: "Mengikis pundi dengan kad mengelakkan pundi daripada terpicit dan menyuntik baki racun ke dalam tubuh."
+      },
+      {
+        question: "Bagi kes gigitan ular berbisa, apakah teknik balutan yang disyorkan oleh KKM dan WHO?",
+        options: [
+          "Tourniquet getah mati sehingga tiada denyutan nadi",
+          "Balutan Ais terus pada luka patukan",
+          "Pressure Immobilization Bandage (PIB) bersama pemasangan splint",
+          "Balutan plaster kedap udara tanpa immobilization"
+        ],
+        answer: 2,
+        explanation: "Pressure Immobilization Bandage memperlahankan aliran cecair limfa tanpa memutuskan bekalan darah arteri utama."
+      },
+      {
+        question: "Sekiranya mangsa terminum bahan kakisan seperti asid bateri atau peluntur kuat, tindakan yang DILARANG adalah:",
+        options: [
+          "Menghubungi talian ambulans 999",
+          "Memaksa mangsa muntah",
+          "Membawa bekas bahan kimia ke hospital",
+          "Membilas bibir yang melecur dengan air bersih"
+        ],
+        answer: 1,
+        explanation: "Memaksa muntah bahan kakisan menyebabkan kecederaan kimia berulang kali pada dinding esofagus dan tekak."
+      },
+      {
+        question: "Apakah cecair rawatan awal yang paling berkesan untuk menyahaktifkan sel sengat obor-obor (jellyfish)?",
+        options: [
+          "Air kencing",
+          "Air paip tawar",
+          "Cuka makan (asid asetik 4-6%)",
+          "Minyak kelapa"
+        ],
+        answer: 2,
+        explanation: "Cuka makan disahkan secara klinikal mampu melumpuhkan nematosis obor-obor kotak daripada melepaskan bisa."
+      },
+      {
+        question: "Apakah nombor talian bebas tol bagi Pusat Racun Negara (PRN) di Malaysia?",
+        options: [
+          "1-800-88-8099",
+          "999",
+          "994",
+          "1-300-88-2525"
+        ],
+        answer: 0,
+        explanation: "Pusat Racun Negara (USM) boleh dihubungi secara percuma di 1-800-88-8099 bagi khidmat nasihat toksikologi."
+      }
+    ];
+
+    let currentQ = 0;
+    let quizScore = 0;
+
+    function startQuiz() {
+      currentQ = 0;
+      quizScore = 0;
+      document.getElementById('quiz-intro').classList.add('hidden');
+      document.getElementById('quiz-result-view').classList.add('hidden');
+      document.getElementById('quiz-question-view').classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = quizQuestions[currentQ];
+      document.getElementById('quiz-progress-text').innerText = `Soalan ${currentQ + 1} / ${quizQuestions.length}`;
+      document.getElementById('quiz-score-badge').innerText = `Markah: ${quizScore}`;
+      document.getElementById('quiz-question-title').innerText = q.question;
+
+      const optsContainer = document.getElementById('quiz-options-container');
+      optsContainer.innerHTML = '';
+
+      q.options.forEach((optText, i) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/30 text-sm font-medium transition flex items-center gap-3";
+        btn.innerHTML = `<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-xs font-bold">${String.fromCharCode(65 + i)}</span> <span>${optText}</span>`;
+        btn.onclick = () => selectQuizAnswer(i, btn);
+        optsContainer.appendChild(btn);
+      });
+
+      const exp = document.getElementById('quiz-explanation');
+      exp.classList.add('hidden');
+      document.getElementById('quiz-next-btn').classList.add('hidden');
+    }
+
+    function selectQuizAnswer(selectedIndex, buttonEl) {
+      const q = quizQuestions[currentQ];
+      const allBtns = document.getElementById('quiz-options-container').querySelectorAll('button');
+      allBtns.forEach(b => b.disabled = true);
+
+      const exp = document.getElementById('quiz-explanation');
+      exp.classList.remove('hidden');
+
+      if (selectedIndex === q.answer) {
+        quizScore++;
+        buttonEl.classList.remove('border-slate-200');
+        buttonEl.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+        exp.className = "mt-5 p-4 rounded-xl text-xs sm:text-sm bg-emerald-50 border border-emerald-200 text-emerald-800";
+        exp.innerHTML = `<strong>Tepat!</strong> ${q.explanation}`;
+      } else {
+        buttonEl.classList.remove('border-slate-200');
+        buttonEl.classList.add('bg-red-50', 'border-red-500', 'text-red-900');
+        allBtns[q.answer].classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+        exp.className = "mt-5 p-4 rounded-xl text-xs sm:text-sm bg-red-50 border border-red-200 text-red-800";
+        exp.innerHTML = `<strong>Salah.</strong> Jawapan sebenar adalah: <em>${q.options[q.answer]}</em>.<br>${q.explanation}`;
+      }
+
+      document.getElementById('quiz-score-badge').innerText = `Markah: ${quizScore}`;
+      document.getElementById('quiz-next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      currentQ++;
+      if (currentQ < quizQuestions.length) {
+        renderQuestion();
+      } else {
+        showQuizResults();
+      }
+    }
+
+    function showQuizResults() {
+      document.getElementById('quiz-question-view').classList.add('hidden');
+      const resultView = document.getElementById('quiz-result-view');
+      resultView.classList.remove('hidden');
+
+      document.getElementById('quiz-final-score').innerText = `${quizScore} / ${quizQuestions.length}`;
+
+      const title = document.getElementById('quiz-result-title');
+      const desc = document.getElementById('quiz-result-desc');
+
+      if (quizScore === quizQuestions.length) {
+        title.innerText = "Cemerlang! Pengamal Bantu Mula Mahir";
+        desc.innerText = "Anda menguasai kesemua prinsip penting rawatan gigitan dan keracunan mengikut piawaian klinikal.";
+      } else if (quizScore >= 3) {
+        title.innerText = "Keputusan Baik!";
+        desc.innerText = "Kefahaman anda mantap, namun pastikan anda mengulang kaji aspek bahan kakisan dan gigitan marin.";
+      } else {
+        title.innerText = "Perlu Ulang Kaji";
+        desc.innerText = "Sila teliti semula Modul 3.0 & Modul 3.1 untuk mengelakkan kesilapan berbahaya dalam rawatan kecemasan.";
+      }
+    }
+
+    // Initialize Simulator on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSimScenario();
+      // Set initial tab styling
+      switchTab('modul30');
+    });
+  </script>
+</body>
+</html>
