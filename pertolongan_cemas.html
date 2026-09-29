@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.0 Asas Pertolongan Cemas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            aid: {
+              red: '#DC2626',
+              darkRed: '#991B1B',
+              softRed: '#FEE2E2',
+              blue: '#0284C7',
+              emerald: '#059669',
+              dark: '#0F172A',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    * {
+      scroll-behavior: smooth;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .pulse-animation {
+      animation: heartPulse 1.2s infinite ease-in-out;
+    }
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-red-500 selection:text-white">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('topik1')">
+          <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-200">
+            <i data-lucide="cross" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-lg sm:text-xl text-slate-900 leading-tight">2.0 Asas Pertolongan Cemas</h1>
+            <p class="text-xs text-slate-500 hidden sm:block">Hub Pembelajaran Interaktif</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a href="tel:999" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-lg transition-all shadow hover:shadow-red-200">
+            <i data-lucide="phone-call" class="w-4 h-4 animate-bounce"></i>
+            <span>Kecemasan: <strong class="tracking-wider">999</strong></span>
+          </a>
+          <button id="soundToggleBtn" onclick="toggleAudioFx()" title="Kesan Bunyi Audio" class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+            <i data-lucide="volume-2" id="soundIcon" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="bg-slate-900 text-white border-b border-slate-800 sticky top-16 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 hide-scrollbar text-xs font-semibold whitespace-nowrap">
+        <button id="nav-topik1" onclick="switchTab('topik1')" class="tab-btn px-3 py-1.5 rounded-lg bg-red-600 text-white transition-all flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i> 1. Asas DRSABC
+        </button>
+        <button id="nav-topik2" onclick="switchTab('topik2')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="book-open" class="w-4 h-4"></i> 2. Tujuan & Peraturan
+        </button>
+        <button id="nav-topik3" onclick="switchTab('topik3')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="activity" class="w-4 h-4"></i> 3. Struktur Badan & Infografik
+        </button>
+        <button id="nav-topik4" onclick="switchTab('topik4')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="heart" class="w-4 h-4"></i> 4. Peredaran Darah
+        </button>
+        <button id="nav-topik5" onclick="switchTab('topik5')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="bandage" class="w-4 h-4"></i> 5. Luka & Balutan
+        </button>
+        <button id="nav-topik6" onclick="switchTab('topik6')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="droplet" class="w-4 h-4"></i> 6. Pendarahan Khas
+        </button>
+        <button id="nav-topik7" onclick="switchTab('topik7')" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center gap-1.5">
+          <i data-lucide="briefcase-medical" class="w-4 h-4"></i> 7. Peti Pertolongan Cemas
+        </button>
+        <button id="nav-kuiz" onclick="switchTab('kuiz')" class="tab-btn px-3.5 py-1.5 rounded-lg bg-emerald-700 text-white hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow">
+          <i data-lucide="award" class="w-4 h-4"></i> Kuiz Ujian
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- PANEL 1: ASAS DRSABC -->
+    <section id="panel-topik1" class="tab-panel space-y-6">
+      <div class="bg-gradient-to-r from-red-600 to-rose-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="max-w-2xl relative z-10">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 1
+          </span>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Asas Pertolongan Cemas & Protokol DRSABC</h2>
+          <p class="text-red-100 text-sm sm:text-base leading-relaxed">
+            Pertolongan cemas ialah bantuan permulaan segera yang diberikan kepada mangsa sebelum tibanya pasukan paramedik atau doktor bertauliah.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="layers" class="w-5 h-5 text-red-600"></i> Aliran Tindakan Kecemasan (Klik Setiap Huruf):
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div onclick="selectDRSABC('D', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border-2 border-red-500 bg-red-50 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-red-600 text-white font-extrabold text-lg flex items-center justify-center mb-2">D</span>
+              <strong class="text-slate-800 text-sm">Danger</strong>
+              <span class="text-xs text-slate-500">Bahaya Persekitaran</span>
+            </div>
+            <div onclick="selectDRSABC('R', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border border-slate-200 bg-white hover:border-red-400 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-slate-900 text-white font-extrabold text-lg flex items-center justify-center mb-2">R</span>
+              <strong class="text-slate-800 text-sm">Response</strong>
+              <span class="text-xs text-slate-500">Tindak Balas AVPU</span>
+            </div>
+            <div onclick="selectDRSABC('S', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border border-slate-200 bg-white hover:border-red-400 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-slate-900 text-white font-extrabold text-lg flex items-center justify-center mb-2">S</span>
+              <strong class="text-slate-800 text-sm">Shout</strong>
+              <span class="text-xs text-slate-500">Panggil Bantuan 999</span>
+            </div>
+            <div onclick="selectDRSABC('A', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border border-slate-200 bg-white hover:border-red-400 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-slate-900 text-white font-extrabold text-lg flex items-center justify-center mb-2">A</span>
+              <strong class="text-slate-800 text-sm">Airway</strong>
+              <span class="text-xs text-slate-500">Saluran Pernafasan</span>
+            </div>
+            <div onclick="selectDRSABC('B', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border border-slate-200 bg-white hover:border-red-400 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-slate-900 text-white font-extrabold text-lg flex items-center justify-center mb-2">B</span>
+              <strong class="text-slate-800 text-sm">Breathing</strong>
+              <span class="text-xs text-slate-500">Lihat, Dengar & Rasa</span>
+            </div>
+            <div onclick="selectDRSABC('C', this)" class="drsabc-card cursor-pointer p-4 rounded-xl border border-slate-200 bg-white hover:border-red-400 hover:shadow-md transition-all flex flex-col items-center text-center">
+              <span class="w-10 h-10 rounded-full bg-slate-900 text-white font-extrabold text-lg flex items-center justify-center mb-2">C</span>
+              <strong class="text-slate-800 text-sm">CPR & AED</strong>
+              <span class="text-xs text-slate-500">Tekanan & Renjatan</span>
+            </div>
+          </div>
+
+          <div class="mt-4 p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="flex items-center gap-3">
+              <span id="drsabc-badge" class="w-8 h-8 rounded-lg bg-red-600 text-white font-black flex items-center justify-center text-sm shadow">D</span>
+              <h4 id="drsabc-title" class="font-bold text-slate-900 text-base sm:text-lg">D - Danger (Bahaya)</h4>
+            </div>
+            <p id="drsabc-desc" class="text-sm text-slate-600 leading-relaxed">
+              Sebelum mendekati mangsa, pastikan persekitaran bebas daripada sebarang bahaya (lalu lintas jalan, api, renjatan elektrik, gas toksik, atau struktur runtuh). Lindungi diri anda terlebih dahulu!
+            </p>
+            <div id="drsabc-tips" class="text-xs">
+              <span class="bg-red-100 text-red-700 px-2.5 py-1 rounded-md font-semibold">Tindakan: Jangan jadi mangsa kedua. Alihkan bahaya jika selamat.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
+              <i data-lucide="info" class="w-5 h-5 text-red-600"></i> Siapakah Ahli Pertolongan Cemas?
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+              Individu yang telah mempelajari teknik rawatan pertolongan cemas asas yang terlatih untuk bertindak pantas dengan alatan minimum sebelum mangsa diserahkan kepada perkhidmatan ambulans.
+            </p>
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-800">
+              <strong>Penting:</strong> Sentiasa memakai Sarung Tangan Getah (PPE) sebelum menyentuh mangsa bagi mengelakkan jangkitan silang patogen bawaan darah.
+            </div>
+          </div>
+          <button onclick="switchTab('topik2')" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold rounded-xl flex items-center justify-center gap-2 transition-all">
+            <span>Seterusnya: Tujuan & Peraturan</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik2" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-blue-700 to-indigo-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 2
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Tujuan dan Peraturan Rawatan Kecemasan</h2>
+        <p class="text-blue-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Matlamat pertolongan cemas diringkaskan menerusi prinsip asas antarabangsa iaitu <strong>3P</strong> serta peraturan tingkah laku penyelamat di lokasi kemalangan.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
+              <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-bold text-red-600 uppercase tracking-wider">Prinsip 1</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Preserve Life</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <strong>Menyelamatkan Nyawa:</strong> Memulihkan pernafasan dan denyutan jantung melalui CPR, menghentikan pendarahan kritikal, dan membuka saluran udara yang tersumbat.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-100 text-[11px] text-slate-500">
+            Contoh: Memulakan resusitasi kardiopulmonari (CPR) dan membalut luka pendarahan utama.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Prinsip 2</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Prevent Condition Worsening</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <strong>Mencegah Keadaan Lebih Buruk:</strong> Menstabilkan bahagian anggota patah dengan anduh, menutup luka terbuka bagi mengelakkan jangkitan kuman, dan mengelakkan renjatan.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-100 text-[11px] text-slate-500">
+            Contoh: Pemasangan anduh lengan sebelum menggerakkan mangsa.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Prinsip 3</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Promote Recovery</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <strong>Menggalakkan Pemulihan:</strong> Memberikan kelegaan sokongan emosi, memastikan keselesaan mangsa, mengurangkan rasa sakit dan mendapatkan rawatan perubatan lanjutan tanpa kelewatan.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-100 text-[11px] text-slate-500">
+            Contoh: Menenangkan mangsa panik dan menyelimuti tubuh yang kesejukan.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i data-lucide="compass" class="w-5 h-5 text-blue-600"></i> Peraturan Emas (Golden Rules) Semasa Rawatan Kecemasan:
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="font-extrabold text-blue-600 text-lg">01</span>
+            <h4 class="font-bold text-slate-900 text-sm mt-1 mb-1">Bertenang & Jangan Panik</h4>
+            <p class="text-xs text-slate-600">Tindakan tenang membolehkan penyelamat berfikir secara rasional dan mententeramkan orang sekeliling.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="font-extrabold text-blue-600 text-lg">02</span>
+            <h4 class="font-bold text-slate-900 text-sm mt-1 mb-1">Utamakan Mangsa Kritikal</h4>
+            <p class="text-xs text-slate-600">Lakukan Triaj: Mangsa sesak nafas dan pendarahan arteri perlu dirawat sebelum mangsa luka calar kecil.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="font-extrabold text-blue-600 text-lg">03</span>
+            <h4 class="font-bold text-slate-900 text-sm mt-1 mb-1">Jangan Gerakkan Tanpa Perlu</h4>
+            <p class="text-xs text-slate-600">Elakkan memindahkan mangsa kecuali wujud ancaman api, letupan atau bahaya yang mendesak.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="font-extrabold text-blue-600 text-lg">04</span>
+            <h4 class="font-bold text-slate-900 text-sm mt-1 mb-1">Hubungi Ambulans 999</h4>
+            <p class="text-xs text-slate-600">Nyatakan butiran penting: Lokasi tepat, mercu tanda, anggaran bilangan mangsa, dan jenis kecederaan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik3" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-emerald-700 to-teal-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 3
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Struktur Tubuh Badan & Peranannya</h2>
+        <p class="text-emerald-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Kefahaman mengenai anatomi manusia membantu penyelamat mengenal pasti kecederaan kritikal serta mengelakkan komplikasi semasa merawat mangsa.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button id="sysbtn-skeleton" onclick="showSystemInfo('skeleton')" class="sys-btn p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="bone" class="w-4 h-4 text-emerald-600"></i> Sistem Rangka
+        </button>
+        <button id="sysbtn-circulatory" onclick="showSystemInfo('circulatory')" class="sys-btn p-3.5 rounded-xl border border-slate-200 bg-white hover:border-emerald-300 font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="heart" class="w-4 h-4 text-red-600"></i> Kardiovaskular
+        </button>
+        <button id="sysbtn-respiratory" onclick="showSystemInfo('respiratory')" class="sys-btn p-3.5 rounded-xl border border-slate-200 bg-white hover:border-emerald-300 font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="wind" class="w-4 h-4 text-cyan-600"></i> Pernafasan
+        </button>
+        <button id="sysbtn-nervous" onclick="showSystemInfo('nervous')" class="sys-btn p-3.5 rounded-xl border border-slate-200 bg-white hover:border-emerald-300 font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Sistem Saraf
+        </button>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white border border-slate-800 shadow-xl space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <div id="sys-icon-wrapper" class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <i data-lucide="bone" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span id="sys-category" class="text-xs uppercase font-bold text-emerald-400 tracking-wider">Sistem Rangka (Skeletal System)</span>
+              <h3 id="sys-name" class="text-xl sm:text-2xl font-extrabold text-white">Sistem Rangka & Tulang Manusia</h3>
+            </div>
+          </div>
+        </div>
+
+        <div id="sys-diagram-wrapper" class="flex flex-col md:flex-row items-center gap-6"></div>
+
+        <div class="bg-white rounded-2xl p-5 text-slate-800 space-y-3">
+          <div id="sys-body" class="text-xs sm:text-sm text-slate-700 leading-relaxed"></div>
+          <div id="sys-pertolongan-note" class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded-r-lg text-xs text-rose-900"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik4" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-rose-700 to-red-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 4
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Peredaran Darah Manusia</h2>
+        <p class="text-rose-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Jantung mengepam kira-kira 5 liter darah ke seluruh tubuh melalui rangkaian salur darah bertekanan untuk membekalkan oksigen kepada sel vital.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+          <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="git-commit" class="w-5 h-5 text-red-600"></i> Perbezaan 3 Jenis Salur Darah & Pendarahan:
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl border border-red-200 bg-red-50/60 space-y-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-red-600 text-white">Arteri (Arterial)</span>
+              <h4 class="font-bold text-sm text-red-950">Darah Memancut Laju</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Warna merah cerah kerana kaya oksigen. Memancut keluar mengikut rentak denyutan jantung. <em>Kecemasan maut serta-merta!</em></p>
+            </div>
+            <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/60 space-y-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-blue-600 text-white">Vena (Venous)</span>
+              <h4 class="font-bold text-sm text-blue-950">Darah Mengalir Perlahan</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Warna merah gelap kerana kurang oksigen. Mengalir keluar secara konsisten dan tidak berdenyut.</p>
+            </div>
+            <div class="p-4 rounded-xl border border-purple-200 bg-purple-50/60 space-y-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-purple-600 text-white">Kapilari (Capillary)</span>
+              <h4 class="font-bold text-sm text-purple-950">Darah Menitik Perlahan</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Pendarahan daripada salur halus di bawah kulit. Berhenti secara spontan atau dengan tekanan lembut plaster biasa.</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs space-y-1">
+              <span class="font-bold text-rose-400 text-sm block">Kaedah Menghentikan Pendarahan Parah:</span>
+              <p class="text-slate-300">1. Tekanan Langsung (Direct Pressure) pada luka dengan kain bersih.<br>2. Tinggikan anggota cedera melepasi paras jantung.<br>3. Pasang balutan mampatan (pressure bandage).</p>
+            </div>
+            <button onclick="openImageModal('sistem_kardio.jpg', 'Rajah Penuh Sistem Kardiovaskular')" class="shrink-0 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow">
+              <i data-lucide="zoom-in" class="w-4 h-4"></i> Rajah Kardio HD
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4 text-center">
+          <div>
+            <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 pulse-animation">
+              <i data-lucide="heart" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-base">Simulator Denyutan Nadi (BPM)</h3>
+            <p class="text-xs text-slate-500 mt-1">Ketik butang mengikut denyutan nadi anda untuk mengira kadar BPM semasa.</p>
+            
+            <div class="my-4 py-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <div id="bpm-readout" class="text-3xl font-black text-red-600 tracking-tight">-- BPM</div>
+              <span class="text-[11px] text-slate-400">Normal Dewasa: 60 - 100 bpm</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <button onclick="recordTapPulse()" class="w-full py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-red-200">
+              Ketik Denyutan Nadi (Tap Here)
+            </button>
+            <button onclick="resetTapPulse()" class="text-xs text-slate-400 hover:text-slate-600 underline">
+              Set Semula
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik5" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-amber-700 to-orange-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 5
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Jenis-Jenis Luka & Balutan</h2>
+        <p class="text-amber-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Luka ialah kecederaan pada tisu badan yang merosakkan permukaan kulit atau struktur di bawahnya, memerlukan pembalutan tepat untuk mengelakkan pencemaran kuman.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 border-b border-slate-200 pb-2">
+        <button id="subnav-luka" onclick="switchSubTopic5('luka')" class="px-4 py-2 rounded-lg text-sm font-bold bg-amber-600 text-white shadow-sm transition-all">
+          Klasifikasi Jenis Luka
+        </button>
+        <button id="subnav-balutan" onclick="switchSubTopic5('balutan')" class="px-4 py-2 rounded-lg text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all">
+          Teknik Balutan & Kain Anduh
+        </button>
+      </div>
+
+      <div id="subpanel-luka" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">01</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Terhiris (Incised Wound)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Disebabkan alat tajam seperti pisau, kaca atau silet. Tepi luka licin dan berdarah banyak kerana salur darah terpotong bersih.</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">02</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Terkoyak (Lacerated Wound)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Disebabkan gigitan haiwan atau hentaman benda bergerigi. Tepi luka bergerigi dan koyak tidak sekata dengan kerosakan tisu luas.</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">03</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Tertusuk (Puncture Wound)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Tusukan paku, jarum atau duri. Mulut luka kecil tetapi dalam, berisiko tinggi dijangkiti bakteria Tetanus (kancing gigi).</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">04</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Geseran / Calar (Abrasion)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Permukaan kulit bergesel dengan jalan atau permukaan kasar. Lapisan epidermis terkelupas dan mudah dimasuki kotoran pasir.</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">05</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Lebam / Tertutup (Contusion)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Hentaman objek tumpul merosakkan salur darah di bawah kulit tanpa menembusi permukaan. Darah terkumpul membentuk tompokan biru/hitam.</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">06</span>
+          <h4 class="font-bold text-slate-900 text-sm">Luka Tembakan (Gunshot Wound)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Mempunyai lubang masuk yang kecil dan lubang keluar yang jauh lebih besar dengan kerosakan organ dalaman yang teruk.</p>
+        </div>
+      </div>
+
+      <div id="subpanel-balutan" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div class="flex flex-wrap gap-2">
+          <button id="btn-anduh-besar" onclick="renderBandageGuide('besar')" class="anduh-nav-btn px-3 py-1.5 rounded-lg border-2 border-amber-500 bg-amber-50 font-bold text-xs text-slate-800 transition-all">
+            Anduh Besar (Arm Sling)
+          </button>
+          <button id="btn-anduh-kolar" onclick="renderBandageGuide('kolar')" class="anduh-nav-btn px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-amber-400 font-bold text-xs text-slate-800 transition-all">
+            Anduh Kolar & Manset (St. John)
+          </button>
+          <button id="btn-anduh-cincin" onclick="renderBandageGuide('cincin')" class="anduh-nav-btn px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-amber-400 font-bold text-xs text-slate-800 transition-all">
+            Balutan Cincin (Objek Tertusuk)
+          </button>
+        </div>
+
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <h4 id="bandage-title" class="font-extrabold text-slate-900 text-base sm:text-lg">Anduh Besar (Arm Sling)</h4>
+            <span id="bandage-knot" class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold text-xs self-start">Ikatan Buku Sila (Reef Knot)</span>
+          </div>
+          <div id="bandage-steps"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik6" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-purple-800 to-indigo-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 6
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Pendarahan dari Mulut, Hidung & Telinga</h2>
+        <p class="text-purple-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Pendarahan orifis (rongga muka) memerlukan tindakan cermat kerana boleh menjejaskan saluran pernafasan atau menandakan trauma tempurung kepala.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+            <i data-lucide="activity" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">1. Pendarahan Hidung (Epistaxis)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Berpunca daripada salur darah kapilari halus di septum hidung pecah akibat cuaca panas atau hentaman.
+          </p>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-700">
+            <strong>Tindakan Betul (DOs):</strong>
+            <ul class="list-disc list-inside space-y-1 text-slate-600">
+              <li>Duduk dan condongkan kepala <strong>ke hadapan</strong>.</li>
+              <li>Picit bahagian lembut hidung selama 10 minit berterusan.</li>
+              <li>Bernafas melalui mulut dan letakkan ais di dahi/hidung.</li>
+            </ul>
+          </div>
+          <div class="text-[11px] text-red-600 font-semibold bg-red-50 p-2 rounded-lg">
+            Awas: JANGAN dongakkan kepala ke belakang (darah akan tertelan ke paru-paru/perut mencetuskan muntah).
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">2. Pendarahan Telinga</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Darah bercampur cecair jernih kuning (Cerebrospinal Fluid - CSF) dari telinga menandakan <strong>keretakan tapak tengkorak</strong>!
+          </p>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-700">
+            <strong>Tindakan Penyelamat:</strong>
+            <ul class="list-disc list-inside space-y-1 text-slate-600">
+              <li>Condongkan telinga berdarah ke bawah agar darah dapat keluar bebas.</li>
+              <li>Tutup telinga secara longgar dengan kain kasa steril.</li>
+              <li>JANGAN sesekali menyumbat telinga dengan kapas atau kain!</li>
+            </ul>
+          </div>
+          <div class="text-[11px] text-amber-700 font-semibold bg-amber-50 p-2 rounded-lg">
+            Hubungi 999 dengan segera dan pastikan leher mangsa tidak dipusingkan.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+            <i data-lucide="smile" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">3. Pendarahan Mulut & Gigi</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Kecederaan pada lidah, bibir, atau gusi akibat gigitan tersentak mahupun gigi tercabut.
+          </p>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-700">
+            <strong>Tindakan Penyelamat:</strong>
+            <ul class="list-disc list-inside space-y-1 text-slate-600">
+              <li>Suruh mangsa condong ke hadapan dan meludah darah keluar.</li>
+              <li>Gigit pad kain kasa steril di soket gusi berdarah selama 15-20 minit.</li>
+              <li>Jika gigi kekal tercabut, rendam gigi dalam susu segar dan bawa ke doktor gigi segera.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-topik7" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-teal-700 to-emerald-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Modul 7
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Keperluan Asas Peti Pertolongan Cemas</h2>
+        <p class="text-teal-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Setiap rumah, tempat kerja, dan kenderaan wajib mempunyai peti pertolongan cemas lengkap dengan alatan standard mengikut garis panduan Jabatan Keselamatan & Kesihatan Pekerjaan (DOSH).
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="check-square" class="w-5 h-5 text-teal-600"></i> Klik Alatan untuk Memeriksa Fungsinya:
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div onclick="inspectKitItem('kain_anduh', this)" class="kit-card cursor-pointer p-3 rounded-xl border-2 border-teal-500 bg-teal-50 hover:shadow-md transition-all text-center">
+              <i data-lucide="triangle" class="w-6 h-6 mx-auto mb-1 text-teal-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Kain Anduh</span>
+            </div>
+            <div onclick="inspectKitItem('kasa_steril', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="square" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Kasa Steril</span>
+            </div>
+            <div onclick="inspectKitItem('plaster', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="band-aid" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Plaster Berubat</span>
+            </div>
+            <div onclick="inspectKitItem('crepe', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="disc" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Crepe Bandage</span>
+            </div>
+            <div onclick="inspectKitItem('antiseptik', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="flask-conical" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Antiseptik</span>
+            </div>
+            <div onclick="inspectKitItem('sarung_tangan', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="hand" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Sarung Tangan</span>
+            </div>
+            <div onclick="inspectKitItem('gunting', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="scissors" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Gunting Tumpul</span>
+            </div>
+            <div onclick="inspectKitItem('cpr_mask', this)" class="kit-card cursor-pointer p-3 rounded-xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition-all text-center">
+              <i data-lucide="shield" class="w-6 h-6 mx-auto mb-1 text-slate-700"></i>
+              <span class="text-xs font-bold block text-slate-800">Topeng CPR</span>
+            </div>
+          </div>
+
+          <div class="mt-4 p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center">
+                <i data-lucide="triangle" id="inspect-icon" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span id="inspect-tag" class="text-[10px] uppercase font-bold text-teal-700 tracking-wider">Peralatan Rawatan Tulang & Balutan</span>
+                <h4 id="inspect-title" class="text-base font-bold text-slate-900">Kain Anduh Segitiga (Triangular Bandage)</h4>
+              </div>
+            </div>
+            <p id="inspect-desc" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Kain berbentuk segitiga (standard 90x90x130cm). Sangat versatil untuk mengampu lengan patah, mengikat balutan cincin pada objek tertusuk, atau balutan tekanan bagi menyekat pendarahan arteri.
+            </p>
+            <div id="inspect-extra" class="text-xs font-semibold text-teal-800 bg-teal-100/70 p-2.5 rounded-lg">
+              Petua: Simpan sekurang-kurangnya 2 - 4 helai dalam setiap peti pertolongan cemas rumah & kenderaan.
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+            <i data-lucide="clipboard-check" class="w-5 h-5 text-teal-600"></i> Etika & Penjagaan Peti Kecemasan:
+          </h3>
+          <ul class="text-xs text-slate-600 space-y-3">
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>Lokasi Mudah Dicapai:</strong> Simpan di tempat yang kering, sejuk dan bebas daripada capaian kanak-kanak kecil.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>Pemeriksaan Berkala:</strong> Periksa tarikh luput ubat antiseptik atau salap setiap 3 hingga 6 bulan.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>Ganti Segera:</strong> Sebarang peralatan steril yang dibuka mesti diganti dengan segera selepas digunakan.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+              <span><strong>Jangan Dikunci:</strong> Peti tidak wajar dikunci dengan mangga yang melambatkan akses semasa panik!</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-kuiz" class="tab-panel hidden space-y-6">
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
+          <i data-lucide="award" class="w-3.5 h-3.5"></i> Ujian Pengukuhan
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">Kuiz Penilaian Asas Pertolongan Cemas</h2>
+        <p class="text-emerald-100 text-sm sm:text-base leading-relaxed max-w-2xl">
+          Uji kefahaman teori dan ketangkasan anda dalam membuat keputusan bagi senario rawatan kecemasan.
+        </p>
+      </div>
+
+      <div id="quiz-card-wrapper" class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm max-w-2xl mx-auto space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <span id="quiz-question-number" class="text-xs font-bold uppercase tracking-wider text-slate-500">Soalan 1 daripada 6</span>
+          <div class="flex items-center gap-2">
+            <span id="quiz-topic-tag" class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Asas DRSABC</span>
+            <span id="quiz-score-badge" class="text-xs font-black px-2 py-0.5 rounded bg-slate-900 text-white">0 / 6</span>
+          </div>
+        </div>
+
+        <h3 id="quiz-question-text" class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+          Soalan dimuatkan...
+        </h3>
+
+        <div id="quiz-options-container" class="space-y-2.5"></div>
+
+        <div id="quiz-feedback-box" class="hidden p-4 rounded-xl text-xs sm:text-sm"></div>
+
+        <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-md">
+          Seterusnya <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
+        </button>
+      </div>
+
+      <div id="quiz-result-wrapper" class="hidden bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center max-w-lg mx-auto space-y-4">
+        <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+          <i data-lucide="award" class="w-10 h-10"></i>
+        </div>
+        <h3 class="text-2xl font-black text-slate-900">Tahniah! Ujian Selesai</h3>
+        <p class="text-sm text-slate-600" id="quiz-final-text">Anda memperoleh markah cemerlang dalam menguasai topik pertolongan cemas.</p>
+        <div class="text-4xl font-extrabold text-emerald-600" id="quiz-final-score">6 / 6</div>
+        <button onclick="restartQuiz()" class="mt-4 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-sm transition-all inline-flex items-center gap-2">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Ulang Ujian Semula
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="imageModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="relative bg-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-700 shadow-2xl">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between text-white">
+        <h4 id="modalImageTitle" class="text-sm sm:text-base font-bold text-slate-200">Paparan Infografik</h4>
+        <button onclick="closeImageModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-3 flex items-center justify-center overflow-auto max-h-[calc(90vh-100px)]">
+        <img id="modalImageSrc" src="" alt="Paparan Penuh" class="max-w-full max-h-full object-contain rounded-lg">
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-6 text-slate-500 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded bg-red-600 text-white flex items-center justify-center font-bold text-xs">
+          <i data-lucide="cross" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <p class="font-bold text-slate-800">2.0 Asas Pertolongan Cemas</p>
+          <p class="text-[11px] text-slate-500">Hak Milik 2026@Pn Farihan Elyana Zahari (PTSS)</p>
+        </div>
+      </div>
+      <p class="max-w-md"><strong>Penafian:</strong> Maklumat ini disediakan untuk tujuan pendidikan. Untuk kecemasan perubatan sebenar di Malaysia, sentiasa hubungi talian kecemasan <strong>999</strong> dengan segera.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* State management */
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    /* Web Audio Synthesizer for safe sound effects */
+    function playBeep(freq = 440, type = 'sine', duration = 0.15) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn("AudioContext error:", e);
+      }
+    }
+
+    function toggleAudioFx() {
+      audioEnabled = !audioEnabled;
+      const soundIcon = document.getElementById('soundIcon');
+      if (audioEnabled) {
+        soundIcon.setAttribute('data-lucide', 'volume-2');
+        playBeep(600, 'sine', 0.1);
+      } else {
+        soundIcon.setAttribute('data-lucide', 'volume-x');
+      }
+      lucide.createIcons();
+    }
+
+    function switchTab(tabId) {
+      playBeep(450, 'triangle', 0.08);
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      const activePanel = document.getElementById('panel-' + tabId);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-red-600', 'text-white', 'bg-emerald-600', 'bg-emerald-700');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+        if (tabId === 'kuiz') {
+          activeBtn.classList.add('bg-emerald-600', 'text-white');
+        } else {
+          activeBtn.classList.add('bg-red-600', 'text-white');
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openImageModal(imgSrc, title) {
+      playBeep(520, 'sine', 0.08);
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImageSrc');
+      const modalTitle = document.getElementById('modalImageTitle');
+      modalImg.src = imgSrc;
+      modalTitle.innerText = title;
+      modal.classList.remove('hidden');
+    }
+
+    function closeImageModal() {
+      playBeep(400, 'sine', 0.06);
+      document.getElementById('imageModal').classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeImageModal();
+    });
+
+    const drsabcData = {
+      'D': {
+        letter: 'D',
+        title: 'D - Danger (Bahaya)',
+        desc: 'Sebelum mendekati mangsa, pastikan persekitaran bebas daripada sebarang bahaya (lalu lintas jalan, api, renjatan elektrik, gas toksik, atau struktur runtuh). Lindungi diri anda terlebih dahulu!',
+        tip: 'Tindakan: Jangan jadi mangsa kedua. Alihkan bahaya jika selamat, atau alihkan mangsa jika bahaya tidak dapat dielakkan.'
+      },
+      'R': {
+        letter: 'R',
+        title: 'R - Response (Tindak Balas)',
+        desc: 'Periksa tahap tindak balas atau kesedaran mangsa menggunakan kaedah AVPU (Alert, Voice, Pain, Unresponsive). Tepuk bahu mangsa dengan lembut dan tanya dengan suara jelas: "Encik/Puan, adakah anda okey?"',
+        tip: 'Tindakan: Jika tiada respon langsung, mangsa berada dalam keadaan tidak sedar (Unconscious).'
+      },
+      'S': {
+        letter: 'S',
+        title: 'S - Shout / Send for Help (Minta Bantuan)',
+        desc: 'Sekiranya mangsa tidak memberi tindak balas, jerit minta pertolongan orang ramai di sekitar. Arahkan seorang individu khusus: "Tolong hubungi ambulans 999 dan dapatkan mesin AED sekarang!"',
+        tip: 'Tindakan: Pastikan talian 999 diberitahu lokasi tepat, bilangan mangsa dan keadaan mangsa.'
+      },
+      'A': {
+        letter: 'A',
+        title: 'A - Airway (Saluran Udara)',
+        desc: 'Buka saluran pernafasan mangsa dengan kaedah "Head-Tilt, Chin-Lift" (Dongakkan kepala, angkat dagu). Ini mengelakkan pangkal lidah daripada menyumbat salur kerongkong mangsa yang tidak sedar.',
+        tip: 'Awas: Jika disyaki mangsa patah leher/tulang belakang, gunakan teknik Jaw-Thrust tanpa mendongakkan kepala.'
+      },
+      'B': {
+        letter: 'B',
+        title: 'B - Breathing (Pernafasan)',
+        desc: 'Periksa pernafasan mangsa tidak lebih 10 saat dengan kaedah 3L: LIHAT (pergerakan turun naik dada), DENGAR (bunyi nafas di mulut), RASA (haba nafas pada pipi anda).',
+        tip: 'Tindakan: Pernafasan gasping (tercungap-cungap jarang) bukan nafas normal; ia tanda jantung terhenti!'
+      },
+      'C': {
+        letter: 'C',
+        title: 'C - CPR & Circulation (Tekanan Dada)',
+        desc: 'Jika mangsa tiada pernafasan atau tidak bernafas normal, mulakan CPR dengan nisbah 30 tekanan dada sedalam 5-6 cm pada kadar 100-120 bpm, diikuti 2 hembusan nafas bantuan (jika terlatih). Pasang mesin AED secepat mungkin.',
+        tip: 'Tindakan: Teruskan kitaran 30:2 sehingga mangsa sedar, AED memberi arahan atau paramedik tiba.'
+      }
+    };
+
+    function selectDRSABC(letter, elem) {
+      playBeep(520, 'sine', 0.1);
+      const data = drsabcData[letter];
+      if (!data) return;
+
+      document.querySelectorAll('.drsabc-card').forEach(c => {
+        c.classList.remove('border-2', 'border-red-500', 'bg-red-50');
+        c.classList.add('border', 'border-slate-200', 'bg-white');
+      });
+
+      if (elem) {
+        elem.classList.remove('border', 'border-slate-200', 'bg-white');
+        elem.classList.add('border-2', 'border-red-500', 'bg-red-50');
+      }
+
+      document.getElementById('drsabc-badge').innerText = data.letter;
+      document.getElementById('drsabc-title').innerText = data.title;
+      document.getElementById('drsabc-desc').innerText = data.desc;
+      document.getElementById('drsabc-tips').innerHTML = '<span class="bg-red-100 text-red-700 px-2.5 py-1 rounded-md font-semibold">' + data.tip + '</span>';
+    }
+
+    const systemData = {
+      skeleton: {
+        category: 'Sistem Rangka (Skeletal System)',
+        name: 'Sistem Rangka & Tulang Manusia',
+        icon: 'bone',
+        color: 'emerald',
+        diagram: `
+          <div class="w-full md:w-5/12 flex flex-col items-center group relative cursor-pointer" onclick="openImageModal('sistem_rangka.jpg', 'Sistem Rangka & Tulang Manusia')">
+            <div class="relative overflow-hidden rounded-xl border border-slate-700 shadow-md max-h-80 w-full bg-slate-950 flex items-center justify-center">
+              <img src="sistem_rangka.jpg" alt="Sistem Rangka & Tulang Manusia" class="w-full h-72 object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/0f172a/10b981?text=Sistem+Rangka+dan+Tulang'">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                  <i data-lucide="zoom-in" class="w-4 h-4"></i> Klik untuk Paparan HD
+                </span>
+              </div>
+            </div>
+            <span class="text-[11px] text-emerald-400 mt-2 flex items-center gap-1">
+              <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Klik rajah untuk memeriksa anatomi penuh
+            </span>
+          </div>
+          <div class="w-full md:w-7/12 space-y-2.5 text-xs">
+            <span class="inline-block bg-emerald-500/20 text-emerald-300 font-bold px-2.5 py-0.5 rounded-full mb-1">Struktur Utama Berdasarkan Infografik</span>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+              <div><strong class="text-emerald-300">Tengkorak & Mandibula:</strong> Melindungi otak dan menyokong struktur muka serta rahang.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+              <div><strong class="text-emerald-300">Sangkar Rusuk (Costa) & Sternum:</strong> Perisai sangkar yang memelihara jantung dan paru-paru.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+              <div><strong class="text-emerald-300">Turus Vertebra (Servikal, Torakal, Lumbal, Sakrum):</strong> Tiang penyokong badan dan pelindung saraf tunjang.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">4</span>
+              <div><strong class="text-emerald-300">Femur, Tibia, Fibula & Gelang Panggul:</strong> Tulang penampung beban utama; patah femur berisiko pendarahan dalaman 1-2 liter!</div>
+            </div>
+          </div>
+        `,
+        body: `
+          <p>Mempunyai <strong>206 ketul tulang</strong> yang membina kerangka penopang tubuh, membolehkan pergerakan melalui sendi, menyimpan kalsium, serta menghasilkan sel darah merah pada sumsum tulang.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Tulang Panjang</span>
+              <span class="text-[11px] text-slate-500">Femur & Humerus</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Tulang Pendek</span>
+              <span class="text-[11px] text-slate-500">Karpal & Tarsal</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Tulang Pipih</span>
+              <span class="text-[11px] text-slate-500">Sternum & Tengkorak</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Tidak Beraturan</span>
+              <span class="text-[11px] text-slate-500">Vertebra (Tulang Belakang)</span>
+            </div>
+          </div>
+        `,
+        pertolongan: "Jangan gerakkan anggota yang disyaki patah tanpa sokongan splin (tuap) atau anduh bagi mengelakkan serpihan tulang memotong salur darah dan saraf utama."
+      },
+      circulatory: {
+        category: 'Sistem Kardiovaskular (Cardiovascular System)',
+        name: 'Sistem Kardiovaskular & Peredaran Manusia',
+        icon: 'heart',
+        color: 'red',
+        diagram: `
+          <div class="w-full md:w-5/12 flex flex-col items-center group relative cursor-pointer" onclick="openImageModal('sistem_kardio.jpg', 'Sistem Kardiovaskular & Peredaran Manusia')">
+            <div class="relative overflow-hidden rounded-xl border border-slate-700 shadow-md max-h-80 w-full bg-slate-950 flex items-center justify-center">
+              <img src="sistem_kardio.jpg" alt="Sistem Kardiovaskular & Peredaran Manusia" class="w-full h-72 object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/0f172a/ef4444?text=Sistem+Kardiovaskular'">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                  <i data-lucide="zoom-in" class="w-4 h-4"></i> Klik untuk Paparan HD
+                </span>
+              </div>
+            </div>
+            <span class="text-[11px] text-red-400 mt-2 flex items-center gap-1">
+              <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Klik rajah untuk memeriksa anatomi penuh
+            </span>
+          </div>
+          <div class="w-full md:w-7/12 space-y-2.5 text-xs">
+            <span class="inline-block bg-rose-500/20 text-rose-300 font-bold px-2.5 py-0.5 rounded-full mb-1">Komponen Utama Berdasarkan Infografik</span>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+              <div><strong class="text-rose-300">Jantung 4 Ruang:</strong> Atrium kanan/kiri, Ventrikel kanan/kiri dan injap pengalir sehala.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+              <div><strong class="text-rose-300">Peredaran Besar (Sistemik):</strong> Jantung &rarr; Aorta &rarr; Seluruh Tubuh &rarr; Vena Kava &rarr; Jantung.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+              <div><strong class="text-rose-300">Peredaran Kecil (Pulmonalis):</strong> Jantung &rarr; Arteri Pulmonalis &rarr; Paru-paru &rarr; Vena Pulmonalis &rarr; Jantung.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">4</span>
+              <div><strong class="text-rose-300">Arteri Karotis & Femoral:</strong> Salur darah bertekanan tinggi; titik kecemasan utama pengawalan pendarahan parah.</div>
+            </div>
+          </div>
+        `,
+        body: `
+          <p>Sistem pengangkutan cecair vital manusia yang membawa oksigen, glukosa, hormon, serta keping darah (trombosit) untuk pembekuan darah apabila berlakunya luka.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-red-600 block text-xs">Arteri</span>
+              <span class="text-[11px] text-slate-500">Dinding tebal elastik, darah bertekanan tinggi</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-blue-600 block text-xs">Vena</span>
+              <span class="text-[11px] text-slate-500">Berinjap sehala, darah bertekanan rendah</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-purple-600 block text-xs">Kapiler</span>
+              <span class="text-[11px] text-slate-500">Dinding selapis halus untuk pertukaran gas</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-amber-600 block text-xs">Komponen Darah</span>
+              <span class="text-[11px] text-slate-500">Plasma, Eritrosit, Leukosit, Trombosit</span>
+            </div>
+          </div>
+        `,
+        pertolongan: "Pendarahan arteri yang terpancut laju mengikut denyut jantung boleh membawa maut dalam tempoh 3-5 minit. Tekanan langsung (direct pressure) tanpa henti mesti diberikan serta-merta!"
+      },
+      respiratory: {
+        category: 'Sistem Pernafasan (Respiratory System)',
+        name: 'Sistem Pernafasan & Paru-Paru',
+        icon: 'wind',
+        color: 'cyan',
+        diagram: `
+          <div class="w-full md:w-5/12 flex flex-col items-center group relative cursor-pointer" onclick="openImageModal('sistem_pernafasan.jpg', 'Sistem Pernafasan & Paru-Paru')">
+            <div class="relative overflow-hidden rounded-xl border border-slate-700 shadow-md max-h-80 w-full bg-slate-950 flex items-center justify-center">
+              <img src="sistem_pernafasan.jpg" alt="Sistem Pernafasan & Paru-Paru" class="w-full h-72 object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/0f172a/06b6d4?text=Sistem+Pernafasan'">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="px-3 py-1.5 rounded-lg bg-cyan-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                  <i data-lucide="zoom-in" class="w-4 h-4"></i> Klik untuk Paparan HD
+                </span>
+              </div>
+            </div>
+            <span class="text-[11px] text-cyan-400 mt-2 flex items-center gap-1">
+              <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Klik rajah untuk memeriksa anatomi penuh
+            </span>
+          </div>
+          <div class="w-full md:w-7/12 space-y-2.5 text-xs">
+            <span class="inline-block bg-cyan-500/20 text-cyan-300 font-bold px-2.5 py-0.5 rounded-full mb-1">Komponen Utama Berdasarkan Infografik</span>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+              <div><strong class="text-cyan-300">Hidung, Farinks & Larinks:</strong> Laluan masuk udara yang menapis kekotoran, melembap dan menghangatkan suhu udara.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+              <div><strong class="text-cyan-300">Trakea, Bronkus & Bronkiolus:</strong> Cabang saluran udara berotot dan berawan ke kedua-dua belah paru-paru.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+              <div><strong class="text-cyan-300">Alveolus & Kapiler (Membran Respirasi):</strong> Tempat penyerapan gas Oksigen (O2) dan pengeluaran Karbon Dioksida (CO2).</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">4</span>
+              <div><strong class="text-cyan-300">Mekanisme Inspirasi & Ekspirasi:</strong> Kontraksi otot diafragma menambah isipadu dada untuk menarik udara masuk.</div>
+            </div>
+          </div>
+        `,
+        body: `
+          <p>Membekalkan gas oksigen secara konsisten kepada sel tubuh dan menyingkirkan gas buangan karbon dioksida bagi mengekalkan keseimbangan pH darah normal.</p>
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span class="font-bold text-slate-900 block text-xs">Inspirasi (Tarik Nafas)</span>
+              <span class="text-xs text-slate-500">Otot berkontraksi, sangkar rusuk naik, tekanan dalam dada menurun dan udara masuk.</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span class="font-bold text-slate-900 block text-xs">Ekspirasi (Hembus Nafas)</span>
+              <span class="text-xs text-slate-500">Otot berelaksasi, isipadu dada mengecil, tekanan naik dan udara dihembus keluar.</span>
+            </div>
+          </div>
+        `,
+        pertolongan: "Kerosakan otak yang tidak boleh dipulihkan akan bermula selepas 4 minit tanpa oksigen! Buka salur pernafasan mangsa dengan teknik dongak kepala angkat dagu serta-merta."
+      },
+      nervous: {
+        category: 'Sistem Kawalan & Saraf (Nervous System)',
+        name: 'Sistem Saraf & Otak Manusia',
+        icon: 'zap',
+        color: 'amber',
+        diagram: `
+          <div class="w-full md:w-5/12 flex flex-col items-center group relative cursor-pointer" onclick="openImageModal('sistem_saraf.jpg', 'Sistem Saraf & Otak Manusia')">
+            <div class="relative overflow-hidden rounded-xl border border-slate-700 shadow-md max-h-80 w-full bg-slate-950 flex items-center justify-center">
+              <img src="sistem_saraf.jpg" alt="Sistem Saraf & Otak Manusia" class="w-full h-72 object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/0f172a/f59e0b?text=Sistem+Saraf'">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                  <i data-lucide="zoom-in" class="w-4 h-4"></i> Klik untuk Paparan HD
+                </span>
+              </div>
+            </div>
+            <span class="text-[11px] text-amber-400 mt-2 flex items-center gap-1">
+              <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Klik rajah untuk memeriksa anatomi penuh
+            </span>
+          </div>
+          <div class="w-full md:w-7/12 space-y-2.5 text-xs">
+            <span class="inline-block bg-amber-500/20 text-amber-300 font-bold px-2.5 py-0.5 rounded-full mb-1">Komponen Utama Berdasarkan Infografik</span>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-900 flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+              <div><strong class="text-amber-300">Sistem Saraf Pusat (SSP):</strong> Terdiri daripada Otak (Serebrum, Serebelum, Batang Otak) & Medula Spinalis.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-900 flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+              <div><strong class="text-amber-300">Sistem Saraf Tepi (SST):</strong> Rangkaian plexus saraf seperti Vertona, Lontuna, Bariuma & Sahuma Nerve Plexus.</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-900 flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+              <div><strong class="text-amber-300">Lobus Otak:</strong> Lobus Frontal (motorik/pertimbangan), Parietal (sensorik), Temporal (memori/bahasa), Oksipital (penglihatan).</div>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-900 flex items-center justify-center font-bold text-[10px] shrink-0">4</span>
+              <div><strong class="text-amber-300">Neuron & Mekanisme Sinapsis:</strong> Komunikasi sel melalui dendrit, akson, neurotransmitter, dan membran sinaps.</div>
+            </div>
+          </div>
+        `,
+        body: `
+          <p>Pusat arahan utama seluruh tubuh badan manusia yang mengawal kawalan gerak (motorik), pemprosesan sensorik, regulasi autonomik jantung, memori, dan emosi.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Lobus Frontal</span>
+              <span class="text-[11px] text-slate-500">Pergerakan motorik & pemikiran logik</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Serebelum</span>
+              <span class="text-[11px] text-slate-500">Keseimbangan & koordinasi otot halus</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Batang Otak</span>
+              <span class="text-[11px] text-slate-500">Mengawal pernafasan & denyut jantung</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+              <span class="font-bold text-slate-900 block text-xs">Medula Spinalis</span>
+              <span class="text-[11px] text-slate-500">Lebuhraya impuls saraf refleks</span>
+            </div>
+          </div>
+        `,
+        pertolongan: "Sekiranya mangsa mengalami gegaran otak atau pengsan, baringkan dalam 'Posisi Pemulihan' agar lidah tidak menyumbat salur kerongkong dan muntah tidak disedut ke paru-paru."
+      }
+    };
+
+    function showSystemInfo(sysKey) {
+      playBeep(480, 'sine', 0.08);
+      const data = systemData[sysKey];
+      if (!data) return;
+
+      document.querySelectorAll('.sys-btn').forEach(btn => {
+        btn.classList.remove('border-2', 'border-emerald-500', 'bg-emerald-50', 'shadow-sm');
+        btn.classList.add('border', 'border-slate-200', 'bg-white');
+      });
+
+      const activeBtn = document.getElementById('sysbtn-' + sysKey);
+      if (activeBtn) {
+        activeBtn.classList.remove('border', 'border-slate-200', 'bg-white');
+        activeBtn.classList.add('border-2', 'border-emerald-500', 'bg-emerald-50', 'shadow-sm');
+      }
+
+      document.getElementById('sys-category').innerText = data.category;
+      document.getElementById('sys-name').innerText = data.name;
+      document.getElementById('sys-diagram-wrapper').innerHTML = data.diagram;
+      document.getElementById('sys-body').innerHTML = data.body;
+      document.getElementById('sys-pertolongan-note').innerHTML = '<strong>Kaitan Kecemasan:</strong> ' + data.pertolongan;
+
+      const iconWrap = document.getElementById('sys-icon-wrapper');
+      iconWrap.innerHTML = '<i data-lucide="' + data.icon + '" class="w-8 h-8"></i>';
+      lucide.createIcons();
+    }
+
+    let tapTimes = [];
+    function recordTapPulse() {
+      playBeep(650, 'sine', 0.05);
+      const now = Date.now();
+      tapTimes.push(now);
+      tapTimes = tapTimes.filter(t => now - t < 5000);
+
+      if (tapTimes.length > 1) {
+        const intervals = [];
+        for (let i = 1; i < tapTimes.length; i++) {
+          intervals.push(tapTimes[i] - tapTimes[i - 1]);
+        }
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const bpm = Math.round(60000 / avgInterval);
+        document.getElementById('bpm-readout').innerText = bpm + ' BPM';
+      } else {
+        document.getElementById('bpm-readout').innerText = 'Ketik lagi...';
+      }
+    }
+
+    function resetTapPulse() {
+      playBeep(300, 'triangle', 0.05);
+      tapTimes = [];
+      document.getElementById('bpm-readout').innerText = '-- BPM';
+    }
+
+    function switchSubTopic5(sub) {
+      playBeep(500, 'sine', 0.06);
+      if (sub === 'luka') {
+        document.getElementById('subpanel-luka').classList.remove('hidden');
+        document.getElementById('subpanel-balutan').classList.add('hidden');
+        document.getElementById('subnav-luka').className = 'px-4 py-2 rounded-lg text-sm font-bold bg-amber-600 text-white shadow-sm transition-all';
+        document.getElementById('subnav-balutan').className = 'px-4 py-2 rounded-lg text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all';
+      } else {
+        document.getElementById('subpanel-luka').classList.add('hidden');
+        document.getElementById('subpanel-balutan').classList.remove('hidden');
+        document.getElementById('subnav-balutan').className = 'px-4 py-2 rounded-lg text-sm font-bold bg-amber-600 text-white shadow-sm transition-all';
+        document.getElementById('subnav-luka').className = 'px-4 py-2 rounded-lg text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all';
+      }
+    }
+
+    const bandageData = {
+      besar: {
+        title: "Anduh Besar (Arm Sling)",
+        knot: "Ikatan Buku Sila (Reef Knot)",
+        steps: [
+          "Letakkan bucu kain anduh di bahagian siku tangan yang tercedera.",
+          "Tarik hujung atas kain melalui bahu sebelah tangan yang sihat di sekeliling leher.",
+          "Tarik hujung bawah kain ke atas melitupi lengan yang patah menuju ke bahu yang sama.",
+          "Ikat kedua-dua bucu dengan <strong>Ikatan Buku Sila</strong> di lekukan tulang selangka (bukan di belakang tengkuk!).",
+          "Kemas dan sematkan bucu di bahagian siku menggunakan pin keselamatan.",
+          "Pastikan hujung kuku jari kelihatan untuk memantau peredaran darah."
+        ]
+      },
+      kolar: {
+        title: "Anduh Kolar & Manset (St. John's Sling)",
+        knot: "Simpul Perikatan Khusus",
+        steps: [
+          "Digunakan khusus untuk kecederaan <strong>tulang selangka (clavicle)</strong> atau sendi bahu.",
+          "Letakkan tapak tangan mangsa yang tercedera di atas bahu bertentangan (posisi menyilang dada).",
+          "Gunakan kain anduh yang dilipat kemas untuk menyokong pergelangan tangan ke leher.",
+          "Ikat dengan selamat tanpa menekan bahagian tulang selangka yang retak.",
+          "Pastikan siku rapat dengan badan menggunakan kain ikatan tambahan di sekeliling dada jika perlu."
+        ]
+      },
+      cincin: {
+        title: "Balutan Cincin (Ring Pad)",
+        knot: "Gegelung Anduh Lipat",
+        steps: [
+          "Digunakan apabila terdapat <strong>objek tajam tertusuk</strong> atau tulang patah terkeluar (luka terbuka).",
+          "Lipat kain anduh secara jalur panjang, kemudian lilitkan di keliling jari tangan membentuk cincin tebal.",
+          "Letakkan bulatan cincin melingkari objek tertusuk agar beban tidak menekan objek tersebut ke dalam tisu.",
+          "Balut di sekeliling lingkaran cincin dengan pembalut gulung (roller bandage) untuk menstabilkannya.",
+          "<em>JANGAN sesekali mencabut objek yang masih tertusuk!</em>"
+        ]
+      }
+    };
+
+    function renderBandageGuide(type) {
+      playBeep(490, 'sine', 0.08);
+      const data = bandageData[type];
+      if (!data) return;
+
+      document.querySelectorAll('.anduh-nav-btn').forEach(btn => {
+        btn.classList.remove('border-2', 'border-amber-500', 'bg-amber-50');
+        btn.classList.add('border', 'border-slate-200', 'bg-white');
+      });
+
+      const activeBtn = document.getElementById('btn-anduh-' + type);
+      if (activeBtn) {
+        activeBtn.classList.remove('border', 'border-slate-200', 'bg-white');
+        activeBtn.classList.add('border-2', 'border-amber-500', 'bg-amber-50');
+      }
+
+      document.getElementById('bandage-title').innerText = data.title;
+      document.getElementById('bandage-knot').innerText = data.knot;
+      
+      let stepHtml = '<h5 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-2">Langkah-Langkah:</h5><ol class="list-decimal list-inside space-y-2 text-xs text-slate-600 leading-relaxed">';
+      data.steps.forEach(s => {
+        stepHtml += '<li>' + s + '</li>';
+      });
+      stepHtml += '</ol>';
+      document.getElementById('bandage-steps').innerHTML = stepHtml;
+    }
+
+    const kitItemsData = {
+      kain_anduh: {
+        tag: "Peralatan Rawatan Tulang & Balutan",
+        title: "Kain Anduh Segitiga (Triangular Bandage)",
+        desc: "Kain berbentuk segitiga (standard 90x90x130cm). Sangat versatil untuk mengampu lengan patah, mengikat balutan cincin pada objek tertusuk, atau balutan tekanan bagi menyekat pendarahan arteri.",
+        extra: "Petua: Simpan sekurang-kurangnya 2 - 4 helai dalam setiap peti pertolongan cemas rumah & kereta.",
+        icon: "triangle"
+      },
+      kasa_steril: {
+        tag: "Rawatan Luka & Perlindungan",
+        title: "Kasa Steril (Sterile Gauze Pad)",
+        desc: "Kain kasa bersih bebas kuman untuk menutup luka berdarah secara terus. Mencegah kemasukan bakteria luar dan membantu penyerapan cecair/darah.",
+        extra: "Petua: Jangan sentuh permukaan kasa yang akan dilekapkan terus ke luka mangsa.",
+        icon: "square"
+      },
+      plaster: {
+        tag: "Luka Kecil & Calar",
+        title: "Plaster Berubat (Adhesive Dressings)",
+        desc: "Pembalut berpelekat pelbagai saiz dengan pad steril di bahagian tengah. Digunakan untuk menutup luka calar kecil, luka terhiris jari, atau gigitan serangga.",
+        extra: "Petua: Tukar plaster setiap hari atau serta-merta jika basah atau kotor.",
+        icon: "band-aid"
+      },
+      crepe: {
+        tag: "Sokongan Sendi & Tekanan",
+        title: "Pembalut Gulung Elastik (Crepe Bandage)",
+        desc: "Pembalut anjal untuk memberikan tekanan seragam ke atas anggota yang terseliuh (sprain/strain) atau mengukuhkan lekatan pad kasa pada luka besar.",
+        extra: "Awas: Jangan balut terlalu ketat sehingga menyekat aliran darah ke hujung jari!",
+        icon: "disc"
+      },
+      antiseptik: {
+        tag: "Pembersihan & Nyahkuman",
+        title: "Cecair Antiseptik (Povidone Iodine / Saline)",
+        desc: "Larutan pembasmi kuman bakteria untuk mencuci keliling tepi luka. Larutan Normal Saline 0.9% sangat digalakkan untuk mencuci kekotoran luka tanpa rasa pedih menyengat.",
+        extra: "Petua: Elakkan menyapu iodin pekat terus ke dalam luka dalam kerana boleh merosakkan sel granulasi baharu.",
+        icon: "flask-conical"
+      },
+      sarung_tangan: {
+        tag: "Kawalan Jangkitan Silang",
+        title: "Sarung Tangan Pakai Buang (Nitrile / Latex)",
+        desc: "Perisai keselamatan utama penyelamat daripada terkena cecair tubuh dan darah mangsa yang berisiko menularkan virus HIV, Hepatitis B dan C.",
+        extra: "Wajib: Pakai sarung tangan sebelum menyentuh sebarang luka mangsa!",
+        icon: "hand"
+      },
+      gunting: {
+        tag: "Alatan Tambahan",
+        title: "Gunting Keselamatan (Blunt-Ended Scissors)",
+        desc: "Gunting khas dengan hujung tumpul membengkok agar pakaian mangsa kecemasan boleh digunting pantas tanpa risiko mencederakan permukaan kulit mangsa.",
+        extra: "Petua: Pastikan bilah gunting sentiasa bersih dan tidak berkarat.",
+        icon: "scissors"
+      },
+      cpr_mask: {
+        tag: "Bantuan Hayat Kecemasan",
+        title: "Topeng CPR (Face Shield with One-Way Valve)",
+        desc: "Plastik pelindung dengan injap satu hala untuk memberikan hembusan nafas bantuan semasa CPR tanpa sentuhan langsung mulut ke mulut mangsa.",
+        extra: "Pencegahan: Menghalang muntah atau kuman mangsa daripada masuk ke mulut penyelamat.",
+        icon: "shield"
+      }
+    };
+
+    function inspectKitItem(key, elem) {
+      playBeep(560, 'sine', 0.08);
+      const data = kitItemsData[key];
+      if (!data) return;
+
+      document.querySelectorAll('.kit-card').forEach(c => {
+        c.classList.remove('border-teal-500', 'bg-teal-50');
+      });
+      if (elem) {
+        elem.classList.add('border-teal-500', 'bg-teal-50');
+      }
+
+      document.getElementById('inspect-tag').innerText = data.tag;
+      document.getElementById('inspect-title').innerText = data.title;
+      document.getElementById('inspect-desc').innerText = data.desc;
+      document.getElementById('inspect-extra').innerText = data.extra;
+      document.getElementById('inspect-icon').setAttribute('data-lucide', data.icon);
+      lucide.createIcons();
+    }
+
+    const quizQuestions = [
+      {
+        topic: "Asas DRSABC",
+        q: "Apakah langkah pertama dan terpenting dalam protokol DRSABC sebelum mendekati mangsa kemalangan?",
+        options: [
+          "Memberikan hembusan nafas CPR",
+          "Memastikan kawasan persekitaran bebas daripada bahaya (Danger)",
+          "Memeriksa kadar denyutan nadi radial",
+          "Menggerakkan mangsa ke tempat teduh"
+        ],
+        answer: 1,
+        explanation: "Keselamatan diri penyelamat adalah keutamaan pertama (Danger). Jangan merawat di zon bahaya seperti renjatan elektrik atau tengah jalan raya."
+      },
+      {
+        topic: "Tujuan Rawatan",
+        q: "Antara berikut, yang manakah BUKAN prinsip asas 3P dalam pertolongan cemas?",
+        options: [
+          "Preserve Life (Menyelamatkan nyawa)",
+          "Prevent Condition Worsening (Mencegah keadaan daripada lebih buruk)",
+          "Promote Recovery (Menggalakkan pemulihan)",
+          "Prescribe Medicine (Memperakui dan menetapkan ubat terkawal)"
+        ],
+        answer: 3,
+        explanation: "Ahli pertolongan cemas tidak mempunyai tauliah perubatan untuk memberi preskripsi ubat terkawal (Prescribe Medicine)."
+      },
+      {
+        topic: "Peredaran Darah",
+        q: "Jika darah terpancut laju berwarna merah cerah mengikut denyutan jantung, pendarahan ini berpunca daripada salur darah jenis apa?",
+        options: [
+          "Salur Vena",
+          "Salur Arteri",
+          "Salur Kapilari",
+          "Salur Limfa"
+        ],
+        answer: 1,
+        explanation: "Arteri membawa darah bertekanan tinggi daripada jantung dan kaya dengan gas oksigen, menjadikannya merah cerah dan memancut laju."
+      },
+      {
+        topic: "Pendarahan Hidung",
+        q: "Bagaimanakah posisi kepala yang betul untuk merawat mangsa pendarahan hidung (epistaksis)?",
+        options: [
+          "Mendongakkan kepala ke belakang setinggi mungkin",
+          "Berbaring terlentang dengan bantal tebal",
+          "Duduk dan menundukkan kepala ke hadapan sedikit",
+          "Menyumbat hidung dengan kertas tisu dan meniup nafas kuat"
+        ],
+        answer: 2,
+        explanation: "Menundukkan kepala ke hadapan menghalang darah daripada mengalir ke tekak yang boleh mencetuskan muntah atau tersedak ke dalam paru-paru."
+      },
+      {
+        topic: "Jenis Balutan",
+        q: "Sekiranya terdapat pisau yang masih tertusuk di bahagian paha mangsa, apakah tindakan yang betul?",
+        options: [
+          "Cabut pisau serta-merta dan sapukan antiseptik",
+          "Tolak pisau masuk lebih dalam supaya darah tidak keluar",
+          "Jangan cabut objek, sebaliknya pasang balutan cincin untuk menstabilkan pisau",
+          "Ikat kaki mangsa dengan tali ketat di atas paras lutut"
+        ],
+        answer: 2,
+        explanation: "Objek tertusuk bertindak seperti penyumbat salur darah yang cedera. Mencabutnya akan menyebabkan pendarahan dalaman masif yang membawa maut!"
+      },
+      {
+        topic: "Peti Kecemasan",
+        q: "Apakah jenis ikatan yang standard digunakan untuk mengikat kain anduh pertolongan cemas di bahu mangsa?",
+        options: [
+          "Ikatan Tindih Kasih",
+          "Ikatan Buku Sila (Reef Knot)",
+          "Ikatan Bunga Geti",
+          "Ikatan Simpul Manuk"
+        ],
+        answer: 1,
+        explanation: "Ikatan Buku Sila menghasilkan ikatan yang rata (tidak menekan kulit/leher) dan sangat mudah serta pantas untuk dileraikan dalam kecemasan."
+      }
+    ];
+
+    let currentQuestionIdx = 0;
+    let userScore = 0;
+    let hasAnswered = false;
+
+    function renderQuizQuestion() {
+      hasAnswered = false;
+      const q = quizQuestions[currentQuestionIdx];
+      const qNumEl = document.getElementById('quiz-question-number');
+      const qTagEl = document.getElementById('quiz-topic-tag');
+      const qTextEl = document.getElementById('quiz-question-text');
+      const container = document.getElementById('quiz-options-container');
+
+      if (!qNumEl || !qTagEl || !qTextEl || !container) return;
+
+      qNumEl.innerText = 'Soalan ' + (currentQuestionIdx + 1) + ' daripada ' + quizQuestions.length;
+      qTagEl.innerText = q.topic;
+      qTextEl.innerText = q.q;
+
+      container.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-slate-50 transition-all text-xs sm:text-sm font-medium text-slate-800 flex items-center justify-between";
+        btn.innerHTML = '<span>' + opt + '</span><i data-lucide="circle" class="w-4 h-4 text-slate-400"></i>';
+        btn.onclick = function() { submitAnswer(idx, btn); };
+        container.appendChild(btn);
+      });
+
+      const feedback = document.getElementById('quiz-feedback-box');
+      if (feedback) feedback.className = 'hidden p-4 rounded-xl mb-4 text-xs sm:text-sm';
+      const nextBtn = document.getElementById('quiz-next-btn');
+      if (nextBtn) nextBtn.classList.add('hidden');
+      lucide.createIcons();
+    }
+
+    function submitAnswer(chosenIdx, clickedBtn) {
+      if (hasAnswered) return;
+      hasAnswered = true;
+
+      const q = quizQuestions[currentQuestionIdx];
+      const feedback = document.getElementById('quiz-feedback-box');
+      const allBtns = document.getElementById('quiz-options-container').querySelectorAll('button');
+
+      if (chosenIdx === q.answer) {
+        userScore++;
+        playBeep(784, 'triangle', 0.2);
+        clickedBtn.classList.remove('border-slate-200', 'hover:border-emerald-500');
+        clickedBtn.classList.add('border-2', 'border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+        if (feedback) {
+          feedback.className = 'block p-4 rounded-xl mb-4 text-xs sm:text-sm bg-emerald-50 border border-emerald-200 text-emerald-900';
+          feedback.innerHTML = '<strong>Jawapan Betul!</strong> ' + q.explanation;
+        }
+      } else {
+        playBeep(220, 'sawtooth', 0.25);
+        clickedBtn.classList.remove('border-slate-200');
+        clickedBtn.classList.add('border-2', 'border-red-500', 'bg-red-50', 'text-red-900');
+        
+        if (allBtns[q.answer]) {
+          allBtns[q.answer].classList.add('border-2', 'border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+        }
+        
+        if (feedback) {
+          feedback.className = 'block p-4 rounded-xl mb-4 text-xs sm:text-sm bg-red-50 border border-red-200 text-red-900';
+          feedback.innerHTML = '<strong>Kurang Tepat.</strong> ' + q.explanation;
+        }
+      }
+
+      const scoreBadge = document.getElementById('quiz-score-badge');
+      if (scoreBadge) scoreBadge.innerText = userScore + ' / ' + quizQuestions.length;
+      const nextBtn = document.getElementById('quiz-next-btn');
+      if (nextBtn) nextBtn.classList.remove('hidden');
+    }
+
+    function nextQuizQuestion() {
+      playBeep(520, 'sine', 0.08);
+      currentQuestionIdx++;
+      if (currentQuestionIdx < quizQuestions.length) {
+        renderQuizQuestion();
+      } else {
+        showFinalQuizResults();
+      }
+    }
+
+    function showFinalQuizResults() {
+      const card = document.getElementById('quiz-card-wrapper');
+      if (card) card.classList.add('hidden');
+      const resWrapper = document.getElementById('quiz-result-wrapper');
+      if (resWrapper) resWrapper.classList.remove('hidden');
+
+      const finalScoreEl = document.getElementById('quiz-final-score');
+      if (finalScoreEl) finalScoreEl.innerText = userScore + ' / ' + quizQuestions.length;
+
+      const finalTextEl = document.getElementById('quiz-final-text');
+      if (finalTextEl) {
+        if (userScore >= 5) {
+          finalTextEl.innerText = "Cemerlang! Anda mempunyai kefahaman yang sangat tinggi tentang tatacara asas pertolongan cemas!";
+        } else if (userScore >= 3) {
+          finalTextEl.innerText = "Tahniah! Anda melepasi tahap asas. Sila ulangkaji topik balutan dan pengesanan pendarahan untuk kemahiran optimum.";
+        } else {
+          finalTextEl.innerText = "Usaha yang baik! Luangkan masa meneroka modul topik 1 hingga 7 untuk mengukuhkan pengetahuan anda.";
+        }
+      }
+    }
+
+    function restartQuiz() {
+      playBeep(600, 'sine', 0.1);
+      currentQuestionIdx = 0;
+      userScore = 0;
+      const scoreBadge = document.getElementById('quiz-score-badge');
+      if (scoreBadge) scoreBadge.innerText = '0 / ' + quizQuestions.length;
+      const resWrapper = document.getElementById('quiz-result-wrapper');
+      if (resWrapper) resWrapper.classList.add('hidden');
+      const card = document.getElementById('quiz-card-wrapper');
+      if (card) card.classList.remove('hidden');
+      renderQuizQuestion();
+    }
+
+    window.onload = function() {
+      lucide.createIcons();
+      renderQuizQuestion();
+      renderBandageGuide('besar');
+      showSystemInfo('skeleton');
+    };
+  </script>
+</body>
+</html>
